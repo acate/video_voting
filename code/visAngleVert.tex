@@ -1,0 +1,290 @@
+\documentclass{article}
+
+%% Created with wxMaxima 15.08.2
+
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{00B5}{\ensuremath{\mu}}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{ifthen}
+\newsavebox{\picturebox}
+\newlength{\pictureboxwidth}
+\newlength{\pictureboxheight}
+\newcommand{\includeimage}[1]{
+    \savebox{\picturebox}{\includegraphics{#1}}
+    \settoheight{\pictureboxheight}{\usebox{\picturebox}}
+    \settowidth{\pictureboxwidth}{\usebox{\picturebox}}
+    \ifthenelse{\lengthtest{\pictureboxwidth > .95\linewidth}}
+    {
+        \includegraphics[width=.95\linewidth,height=.80\textheight,keepaspectratio]{#1}
+    }
+    {
+        \ifthenelse{\lengthtest{\pictureboxheight>.80\textheight}}
+        {
+            \includegraphics[width=.95\linewidth,height=.80\textheight,keepaspectratio]{#1}
+            
+        }
+        {
+            \includegraphics{#1}
+        }
+    }
+}
+\DeclareMathOperator{\abs}{abs}
+\usepackage{animate} % This package is required because the wxMaxima configuration option
+                      % "Export animations to TeX" was enabled when this file was generated.
+
+\definecolor{labelcolor}{RGB}{100,0,0}
+
+\begin{document}
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}\color{red}\bf
+\begin{verbatim}
+-->  
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}\color{blue}
+\begin{verbatim}
+angleA : atan(dN/h);
+angleD : atan(dF/(h-s));
+fov : (angleD - angleA)/(yB - yT);
+\end{verbatim}
+\end{minipage}
+%%% OUTPUT:
+
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o78) }\quad $}
+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \]
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o79) }\quad $}
+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \]
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o80) }\quad $}
+\frac{\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) }{\mathit{yB}-\mathit{yT}}\mbox{}
+\]
+%%%%%%%%%%%%%%%
+
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}\color{red}\bf
+\begin{verbatim}
+-->  
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}\color{blue}
+\begin{verbatim}
+betaT : fov*yT;
+sigmaT : %pi/2 - (angleD + betaT);
+\end{verbatim}
+\end{minipage}
+%%% OUTPUT:
+
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o81) }\quad $}
+\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}\]
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o82) }\quad $}
+-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) +\frac{\pi }{2}\mbox{}
+\]
+%%%%%%%%%%%%%%%
+
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}\color{red}\bf
+\begin{verbatim}
+-->  
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}\color{blue}
+\begin{verbatim}
+beta : yPos * fov;
+delta : %pi/2 - beta - sigmaT;
+d : h * tan(delta);
+\end{verbatim}
+\end{minipage}
+%%% OUTPUT:
+
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o83) }\quad $}
+\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}\]
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o84) }\quad $}
+\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \]
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o85) }\quad $}
+h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) \mbox{}
+\]
+%%%%%%%%%%%%%%%
+
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}\color{red}\bf
+\begin{verbatim}
+-->  
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}\color{blue}
+\begin{verbatim}
+d;
+\end{verbatim}
+\end{minipage}
+%%% OUTPUT:
+
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o86) }\quad $}
+h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) \mbox{}
+\]
+%%%%%%%%%%%%%%%
+
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}\color{red}\bf
+\begin{verbatim}
+-->  
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}\color{blue}
+\begin{verbatim}
+epsT : atan(d/(h-s)) - atan(d/(h-s/2));
+epsB : atan(d/(h-s/2)) - atan(d/h);
+omega : epsT + epsB;
+\end{verbatim}
+\end{minipage}
+%%% OUTPUT:
+
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o87) }\quad $}
+\mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) }{h-s}\right) -\mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) }{h-\frac{s}{2}}\right) \]
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o88) }\quad $}
+\mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) }{h-\frac{s}{2}}\right) -\mathrm{atan}\left( \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) \right) \]
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o89) }\quad $}
+\mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) }{h-s}\right) -\mathrm{atan}\left( \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) \right) \mbox{}
+\]
+%%%%%%%%%%%%%%%
+
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}\color{red}\bf
+\begin{verbatim}
+-->  
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}\color{blue}
+\begin{verbatim}
+ratsimp(%);
+\end{verbatim}
+\end{minipage}
+%%% OUTPUT:
+
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o90) }\quad $}
+-\mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }{s-h}\right) -\mathrm{atan}\left( \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) \right) \mbox{}
+\]
+%%%%%%%%%%%%%%%
+
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}\color{red}\bf
+\begin{verbatim}
+-->  
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}\color{blue}
+\begin{verbatim}
+trigsimp(%);
+\end{verbatim}
+\end{minipage}
+%%% OUTPUT:
+
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o91) }\quad $}
+-\mathrm{atan}\left( \frac{h\cdot \mathrm{sin}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }{\left( s-h\right) \cdot \mathrm{cos}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }\right) -\mathrm{atan}\left( \frac{\mathrm{sin}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }{\mathrm{cos}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }\right) \mbox{}
+\]
+%%%%%%%%%%%%%%%
+
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}\color{red}\bf
+\begin{verbatim}
+-->  
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}\color{blue}
+\begin{verbatim}
+trigreduce(%);
+\end{verbatim}
+\end{minipage}
+%%% OUTPUT:
+
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o92) }\quad $}
+-\mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}-\frac{\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yPos}}{\mathit{yT}-\mathit{yB}}-\frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yPos}}{\mathit{yT}-\mathit{yB}}+\frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}}{\mathit{yT}-\mathit{yB}}\right) }{s-h}\right) -\mathrm{atan}\left( \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}-\frac{\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yPos}}{\mathit{yT}-\mathit{yB}}-\frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yPos}}{\mathit{yT}-\mathit{yB}}+\frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}}{\mathit{yT}-\mathit{yB}}\right) \right) \mbox{}
+\]
+%%%%%%%%%%%%%%%
+
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}\color{red}\bf
+\begin{verbatim}
+-->  
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}\color{blue}
+\begin{verbatim}
+factor(%);
+\end{verbatim}
+\end{minipage}
+%%% OUTPUT:
+
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o93) }\quad $}
+-\left( \mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }{s-h}\right) +\mathrm{atan}\left( \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) \right) \right) \mbox{}
+\]
+%%%%%%%%%%%%%%%
+
+
+\noindent
+%%%%%%%%%%%%%%%
+%%% INPUT:
+\begin{minipage}[t]{8ex}\color{red}\bf
+\begin{verbatim}
+-->  
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[t]{\textwidth}\color{blue}
+\begin{verbatim}
+omega;
+\end{verbatim}
+\end{minipage}
+%%% OUTPUT:
+
+\[\displaystyle
+\parbox{10ex}{$\color{labelcolor}\mathrm{\tt (\%o94) }\quad $}
+\mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) }{h-s}\right) -\mathrm{atan}\left( \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) \right) \mbox{}
+\]
+%%%%%%%%%%%%%%%
+
+\end{document}

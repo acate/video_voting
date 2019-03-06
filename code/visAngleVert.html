@@ -1,0 +1,165 @@
+<!DOCTYPE HTML">
+<HTML>
+ <HEAD>
+  <TITLE>visAngleVert</TITLE>
+  <META NAME="generator" CONTENT="wxMaxima">
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    displayAlign: "left",
+    context: "MathJax"
+  })
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+</script>
+  <link rel="stylesheet" type="text/css" href="visAngleVert_htmlimg/visAngleVert.css"/>
+ </HEAD>
+ <BODY>
+
+<!-- ***************************************************** -->
+<!--          Created with wxMaxima version 15.08.2         -->
+<!-- ***************************************************** -->
+<noscript><div class="error message">    Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.</div></noscript>\(      \DeclareMathOperator{\abs}{abs}
+\)
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">angleA</span> <span class="code_operator">:</span> <span class="code_function">atan</span>(<span class="code_variable">dN</span><span class="code_operator">/</span><span class="code_variable">h</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">angleD</span> <span class="code_operator">:</span> <span class="code_function">atan</span>(<span class="code_variable">dF</span><span class="code_operator">/</span>(<span class="code_variable">h</span><span class="code_operator">-</span><span class="code_variable">s</span>))<span class="code_endofline">;</span><BR>
+<span class="code_variable">fov</span> <span class="code_operator">:</span> (<span class="code_variable">angleD</span> <span class="code_operator">-</span> <span class="code_variable">angleA</span>)<span class="code_operator">/</span>(<span class="code_variable">yB</span> <span class="code_operator">-</span> <span class="code_variable">yT</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o78) }\quad \mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \]\[\mathrm{\tt (\%o79) }\quad \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \]\[\mathrm{\tt (\%o80) }\quad \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) }{\mathit{yB}-\mathit{yT}}\]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">betaT</span> <span class="code_operator">:</span> <span class="code_variable">fov</span><span class="code_operator">*</span><span class="code_variable">yT</span><span class="code_endofline">;</span><BR>
+<span class="code_variable">sigmaT</span> <span class="code_operator">:</span> <span class="code_variable">%pi</span><span class="code_operator">/</span><span class="code_number">2</span> <span class="code_operator">-</span> (<span class="code_variable">angleD</span> <span class="code_operator">+</span> <span class="code_variable">betaT</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o81) }\quad \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}\]\[\mathrm{\tt (\%o82) }\quad -\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) +\frac{\pi }{2}\]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">beta</span> <span class="code_operator">:</span> <span class="code_variable">yPos</span> <span class="code_operator">*</span> <span class="code_variable">fov</span><span class="code_endofline">;</span><BR>
+<span class="code_variable">delta</span> <span class="code_operator">:</span> <span class="code_variable">%pi</span><span class="code_operator">/</span><span class="code_number">2</span> <span class="code_operator">-</span> <span class="code_variable">beta</span> <span class="code_operator">-</span> <span class="code_variable">sigmaT</span><span class="code_endofline">;</span><BR>
+<span class="code_variable">d</span> <span class="code_operator">:</span> <span class="code_variable">h</span> <span class="code_operator">*</span> <span class="code_function">tan</span>(<span class="code_variable">delta</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o83) }\quad \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}\]\[\mathrm{\tt (\%o84) }\quad \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \]\[\mathrm{\tt (\%o85) }\quad h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) \]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">d</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o86) }\quad h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) \]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">epsT</span> <span class="code_operator">:</span> <span class="code_function">atan</span>(<span class="code_variable">d</span><span class="code_operator">/</span>(<span class="code_variable">h</span><span class="code_operator">-</span><span class="code_variable">s</span>)) <span class="code_operator">-</span> <span class="code_function">atan</span>(<span class="code_variable">d</span><span class="code_operator">/</span>(<span class="code_variable">h</span><span class="code_operator">-</span><span class="code_variable">s</span><span class="code_operator">/</span><span class="code_number">2</span>))<span class="code_endofline">;</span><BR>
+<span class="code_variable">epsB</span> <span class="code_operator">:</span> <span class="code_function">atan</span>(<span class="code_variable">d</span><span class="code_operator">/</span>(<span class="code_variable">h</span><span class="code_operator">-</span><span class="code_variable">s</span><span class="code_operator">/</span><span class="code_number">2</span>)) <span class="code_operator">-</span> <span class="code_function">atan</span>(<span class="code_variable">d</span><span class="code_operator">/</span><span class="code_variable">h</span>)<span class="code_endofline">;</span><BR>
+<span class="code_variable">omega</span> <span class="code_operator">:</span> <span class="code_variable">epsT</span> <span class="code_operator">+</span> <span class="code_variable">epsB</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o87) }\quad \mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) }{h-s}\right) -\mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) }{h-\frac{s}{2}}\right) \]\[\mathrm{\tt (\%o88) }\quad \mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) }{h-\frac{s}{2}}\right) -\mathrm{atan}\left( \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) \right) \]\[\mathrm{\tt (\%o89) }\quad \mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) }{h-s}\right) -\mathrm{atan}\left( \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) \right) \]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">ratsimp</span>(<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o90) }\quad -\mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }{s-h}\right) -\mathrm{atan}\left( \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) \right) \]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">trigsimp</span>(<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o91) }\quad -\mathrm{atan}\left( \frac{h\cdot \mathrm{sin}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }{\left( s-h\right) \cdot \mathrm{cos}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }\right) -\mathrm{atan}\left( \frac{\mathrm{sin}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }{\mathrm{cos}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }\right) \]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">trigreduce</span>(<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o92) }\quad -\mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}-\frac{\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yPos}}{\mathit{yT}-\mathit{yB}}-\frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yPos}}{\mathit{yT}-\mathit{yB}}+\frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}}{\mathit{yT}-\mathit{yB}}\right) }{s-h}\right) -\mathrm{atan}\left( \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}-\frac{\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yPos}}{\mathit{yT}-\mathit{yB}}-\frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yPos}}{\mathit{yT}-\mathit{yB}}+\frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}}{\mathit{yT}-\mathit{yB}}\right) \right) \]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_function">factor</span>(<span class="code_variable">%</span>)<span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o93) }\quad -\left( \mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) }{s-h}\right) +\mathrm{atan}\left( \mathrm{tan}\left( \frac{\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \cdot \mathit{yB}+\left( -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) -\mathrm{atan}\left( \frac{\mathit{dF}}{s-h}\right) \right) \cdot \mathit{yPos}+\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \cdot \mathit{yT}}{\mathit{yT}-\mathit{yB}}\right) \right) \right) \]
+
+
+<!-- Code cell -->
+
+
+<TABLE><TR><TD>
+  <SPAN CLASS="prompt">
+-->  
+  </SPAN></TD>
+  <TD><SPAN CLASS="input">
+<span class="code_variable">omega</span><span class="code_endofline">;</span><span class="code_operator"></span>  </SPAN></TD>
+</TR></TABLE>
+\[\mathrm{\tt (\%o94) }\quad \mathrm{atan}\left( \frac{h\cdot \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) }{h-s}\right) -\mathrm{atan}\left( \mathrm{tan}\left( \frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yT}}{\mathit{yB}-\mathit{yT}}-\frac{\left( \mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) -\mathrm{atan}\left( \frac{\mathit{dN}}{h}\right) \right) \cdot \mathit{yPos}}{\mathit{yB}-\mathit{yT}}+\mathrm{atan}\left( \frac{\mathit{dF}}{h-s}\right) \right) \right) \]
+
+ <HR>
+ <SMALL> Created with <A HREF="http://wxmaxima.sourceforge.net/">wxMaxima</A>.</SMALL>
+ </BODY>
+</HTML>
