@@ -47,6 +47,12 @@ BASE_DIR=".."
 
 VID_DIR=$BASE_DIR"/vid"
 
+# Dir. holding (in subdir) the canonical version of this script (from which copies can be made for specific projects)
+#   as well as other frequently used materials
+# NOTE: this var name needs to be QUOTED ("") when used with a $, because of backslash-space in path name
+#   i.e. "$CANONICAL_DIR"
+CANONICAL_DIR=~/Google\ Drive/teaching/activities/video_voting
+
 
 # NOTE that this is in cwd, NOT base_dir
 FRAME_DIR=./frames
@@ -66,8 +72,12 @@ FRAME_FILE_EXT=.png;
 
 # EXISTING FILES IN ../vid/ dir
 
-# Video of the class holding up their pieces of paper while watching video
-WATCHED_VID_FILE=$VID_DIR/once_upon_duel.mp4;
+# Video that the class watched while holding up their pieces of paper
+#WATCHED_VID_FILE=$VID_DIR/once_upon_duel.mp4;
+# For the "duel" video, can just use the copy adc put in the directory that holds the canonical version of this script
+# NOTE: remember that need double quotes around path containing $CANONICAL_DIR
+#   Will ALSO need to put quotes around $WATCHED_VID_FILE when used below
+WATCHED_VID_FILE="$CANONICAL_DIR/vid/once_upon_duel.mp4";
 
 # Video of the class holding up their pieces of paper while watching the "WATCHED_VID"
 CLASS_VID_FILE=$VID_DIR/class.mp4;
@@ -127,11 +137,16 @@ DATA_FILE=frame_pixel_counts.csv
 CROP_TOP=.2;
 CROP_BOT=.6;
 
-# In units of card height:
+
+# Minimum distance from the camera to the closest row of desks, and to the farthest row of desks
+# In units of card HEIGHT:
 
 MAX_DISTANCE=40;
 MIN_DISTANCE=10;
 
+# Height of camera above the top of the lowest card position, in units of card HEIGHT
+#   This is non-intuitive; is based on how adc originally framed the trigonometry
+# In practical terms, height from surface of a desk to camera, minus one card height. 
 CAMERA_HEIGHT=6;
 
 # HORIZONTAL position
@@ -141,7 +156,9 @@ CAMERA_HEIGHT=6;
 CROP_L=0;
 CROP_R=1;
 
+
 # In units of card WIDTH:
+# (2019-03-08 adc says: width????????????????????????????)
 
 # This is the real-world width of the left-to-right span of cards that appear in the video frame.
 # This can correspond to either the width of a row of students in the classroom (if the entire row is visible in the frame)
@@ -162,7 +179,7 @@ CAMERA_LAT_POS=10;
 # Parameters for trimming "watched vid" to section that corresponds to "class vid"
 
 # hh:mm:ss format
-TRIM_START_TIME=00:02:16;
+TRIM_START_TIME=00:00:00;
 
 # m:ss format
 TRIM_DURATION=2:43;
@@ -176,7 +193,6 @@ MOSAIC_DURATION=50;
 # Width for small videos (e.g. thresholded vids used for data analysis)
 # (Height will be adjusted automatically to preserve original aspect ratio.
 #   This means it is important the the chosen width will correspond to an integer-value height, or else error.)
-#
 # TODO: change this to a proportion, write test that ensures that both W and H end up being integers
 
 SMALL_VID_W=320;
@@ -234,7 +250,7 @@ else
     echo "Trimming $WATCHED_VID_FILE to correspond to $CLASS_VID_FILE section."
     echo "Writing $WATCHED_VID_TRIMMED"
     
-    ffmpeg -hide_banner -ss $TRIM_START_TIME -i $WATCHED_VID_FILE -t $TRIM_DURATION -c copy $WATCHED_VID_TRIMMED
+    ffmpeg -hide_banner -ss $TRIM_START_TIME -i "$WATCHED_VID_FILE" -t $TRIM_DURATION -c copy $WATCHED_VID_TRIMMED
 
 fi
 

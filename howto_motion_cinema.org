@@ -1,0 +1,804 @@
+#+TITLE: howto_motion_cinema.org
+#+DATE: <2018-03-09 Fri>
+#+AUTHOR: Anthony D. Cate, Ph.D.
+
+# Following line prevents single underscores from indicating subscripts to org mode:
+#+OPTIONS: ^:nil
+
+# Org-mode cheat sheet:
+# ---------------------
+#
+# C-c C-t        Toggle TODO state
+# C-c . [RET]    Insert current date from calendar, result e.g.: <2018-01-11 Thu>
+# 
+
+* Overview
+
+This is in-class assignment #4 for SP Spring 2018.  First time doing this.  Involves the duel scene from Once Upon a Time in the West.
+
+* Files
+
+In dir ~/Google Drive/teaching/SP_2018/in-class/motion_cinema/
+
+2018-03-17-19:55
+Moved all video files to a new dir:
+
+#+BEGIN_SRC 
+motion_cinema/vid/
+#+END_SRC
+
+** Temporary directory used while improving scripts
+
+#+BEGIN_SRC 
+motion_cinema_TESTING
+#+END_SRC
+
+2018-04-08-14:19
+
+adc copied all ./code and ./vid files to this second directory a week ago or more, and has been working there exclusively.
+
+* "Results" video to show class
+** DONE Overlay graph of pixel counts on duel video
+*** DONE Octave/matlab script to write .csv file from .mat file of pixel counts per frame
+
+./code/write_mat_to_csv.m
+
+Needed to install Octave "signal" package, which depends on newer version of "control" package, so did in Octave (running as anthony):
+
+#+BEGIN_SRC matlab
+pkg install control -forge -verbose
+pkg install signal -forge -verbose
+#+END_SRC
+
+-verbose option was essential for me to know whether anything was happening.  Looks like maybe package is compiled by this command?  Not at all certain about that, but there are a lot of commands echoed by the -verbose flag that I don't understand; mostly references to "/usr/bin/mkoctfile".  
+
+Need to do this to enable medfilt1 function:
+
+#+BEGIN_SRC matlab
+pkg load signal
+#+END_SRC
+
+*** DONE Make script that runs in Octave instead of matlab
+
+Using Octave "video" package, which has limited functions: mainly aviread.  Don't know whether need to convert video to .avi format first.  
+
+**** Note about Octave video package
+
+- It was a pain to install, because for some reason 
+
+#+BEGIN_SRC matlab
+pkg install video -forge 
+#+END_SRC
+
+... didn't install dependencies, even though I think it's supposed to.  
+
+- I had to install many linux command line tools "by hand."  I would read the error message thrown by "pkg install," search for the proper name of that tool on the Internets (usually not the same as the name listed in the error message), and then do "sudo apt install [tool]."
+
+**** Octave script using video package
+
+2018-03-11-18:38
+
+Began writing countPixels.m in .../motion_cinema/code/ dir.  Copied cardColorVid.m and modified.
+
+Notes:
+
+- Need to convert from mp4 to avi or at least to some codec supported by aviread.m.
+- From online documentation for aviread.m: can do this to list aviread's codecs:
+
+#+BEGIN_SRC matlab
+aviread("codecs")
+#+END_SRC
+
+I did this to get readable video for aviread.m:
+
+#+BEGIN_SRC sh
+ffmpeg -i ../classShort320.mp4 ../classShort320.avi
+#+END_SRC
+
+Easy peasey. 
+
+Octave has rgb2hsv function just like matlab.  
+
+2018-03-12
+
+I tried running countPixels.m on a very small version of ../classShort.mp4 (classShort320.avi), and it is still very slow.  So my guess is that the rgb2hsv function is part of the problem.  Therefore, try approach of extracting blue/yellow plane from video using ffmpeg and thresholding with ffmpeg, too; then Octave can only have to adjust the pixel counts for position in the frame (proxy for distance from camera).
+
+2018-03-12-16:47
+
+For some reason converting mp4 to avi for Octave DIDN'T work, but orig. mp4 files (outputLo.mp4 *Hi.mp4) DID.  
+
+Process octave-gui has a big memory leak or something.  It takes up more and more RAM until it crashes, even with just 4912 frames.
+
+I tried taking out the plot commands and ran it from command line: 
+
+#+BEGIN_SRC matlab
+>> countPixels.m
+#+END_SRC
+
+But same problem occurred.  
+
+Did get extra error message from having run it from bash command line:
+
+#+BEGIN_SRC bash
+>> countPixels
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x7f7270898ce0] Failed to open codec in avformat_find_stream_info
+#+END_SRC
+
+I don't understand what to do based on it, though.  (Maybe: output using different codec than the ones listed in square brackets??) (Try adding "-vcodec mpeg4" option to command the makes outputHi.mp4, why not?)
+
+I will try processing the frames in chunks of about 1000, and append to output file instead of writing, with csvwrite command.  
+
+Will have to run through all the frames before writing, though, so can find global min and max frame values first.  Maybe save var to .mat periodically instead of appending to .csv file; just write to .csv all at once after all processed, if that can work.  
+
+Result: couldn't get through second 1000 beore crashing.  Will try exiting Octave between chunks.  Will need to load .mat file at beginning of script before second chunk.  
+
+SOLUTION (?): used -vcodec png.  -vcodec mpeg4 DIDN'T work. Got from frame 44s.t. to 4500 without error.  Redid with -vcodec h264.
+
+OK, SOLUTION: forgot to use png codec with outputLo.mp4 as well.  Did it. 
+
+**** DONE Fix calculation of numbers of blue and yellow cards
+
+Approach of counting pixels as a proxy for number of cards has a few problems.  
+
+***** Ideas for fixing pixel counting issues
+***** DONE Faster method for identifying blue/yellow pixels
+
+Original (in cardColorVid.m) method was to convert pixels from rgb to hsv space, threshold so only look for fairly saturated pixels, make histogram of hue numbers, and then take bin counts as the pixel counts.  This runs really slowly on my office PC, although that could be due to file io because script loads one frame at a time.  
+
+To speed up and improve, maybe preprocess with these steps:
+
+- Make a much smaller copy of the video (smaller spatial dimensions) to perform the analysis on.
+- Extract the blue/yellow channel using ffmpeg (is one of the yuv channels, can't recall which one).  Then saturated values correspond to very high or very low values only.  
+
+****** ffmpeg extractplanes filter
+
+NOTE: The term for a yuv component is "plane," in ffmpeg at the very least.  As in, "There are three yuv planes: y, u, and v."
+
+The ffmpeg "extractplanes" filter will output a grayscale video, which is what I want.  I had previously enjoyed displaying the actual appearance of the planes by using the "lutyuv" filter
+
+To get a single yuv plane as grayscale (u is blue/yellow):
+#+BEGIN_SRC sh
+ffplay -hide_banner -i ../classShort.mp4 -vf "extractplanes=u, scale=640:-1"
+#+END_SRC
+
+To see the colors in just one yuv plane:
+#+BEGIN_SRC sh
+ffplay -hide_banner -i ../classShort.mp4 -vf "lutyuv=y=128:v=128, scale=640:-1"
+#+END_SRC
+
+To combine one yuv plane with the luminance plane (which makes it easier to tell what the objects are), only fix one of the color planes:
+#+BEGIN_SRC sh
+ffplay -hide_banner -i ../classShort.mp4 -vf "lutyuv=v=128, scale=640:-1"
+#+END_SRC
+
+(NOTE: "color planes" are probably called chroma or something instead.)
+
+****** Imagemagick identify to get histogram
+
+COOL:
+
+Imagemagick "identify" command will give a complete histogram of pixel counts for single frames!!!
+
+#+BEGIN_SRC sh
+# Extract one frame from video; png image is grayscale representing the blue/yellow plane
+ffmpeg -hide_banner -ss 0 -i ../classShort.mp4 -vframes 1 -vf "extractplanes=u, scale=640:-1" testFrame.png
+
+# See all kinds of data, including complete histogram of pixel counts, for the png image:
+identify -verbose testFrame.png
+#+END_SRC
+
+To view histogram, tried this:
+#+BEGIN_SRC sh
+convert testFrame.png -colorspace Gray -define histogram:unique-colors-false histogram:testHistGray.png ; display testHistGray.png
+#+END_SRC
+
+IDEA: to solve problem of ignoring non-card pixels, define the average _histogram_?  No, wait, that can't work, but I guess an average histogram could help to identify how to threshold the image for the purpose of identifying the card pixels.  
+
+****** ffmpeg Threshold filter
+
+IDEA: apply threshold using ffmpeg to produce a blue/yellow plane grayscale thresholded video, which would only show the pixels above threshold (would need to do twice, once for blue and once for yellow?).  Advantage that could see which pixels were selected, check whether corresponded to cards or not.  
+
+Example threshold code from this link:
+
+https://ffmpeg.org/ffmpeg-filters.html#threshold
+
+Didn't work because input video dimensions didn't match default dims for lavfi thingies:
+#+BEGIN_SRC sh
+ffplay -i ../classShort.mp4 -f lavfi -i color=gray -f lavfi -i color=black -f lavfi -i color=white -lavfi threshold 
+#+END_SRC
+
+Did work:
+#+BEGIN_SRC sh
+ffmpeg -hide_banner -i ../classShort.mp4 -f lavfi -i "color=gray,scale=1920x1080" -f lavfi -i "color=black,scale=1920x1080" -f lavfi -i "color=white,scale=1920x1080" -lavfi threshold output.mp4
+#+END_SRC
+
+Got this to work:
+All options essential:
+ffmpeg -i ../classShort.mp4 -vf "extractplanes=u, format=yuv420p, scale=1920x1080" ../classShortPlaneU.mp4
+
+ffmpeg -hide_banner -i ../classShortPlaneU.mp4 -f lavfi -i "color=gray,scale=1920x1080" -f lavfi -i "color=black,scale=1920x1080" -f lavfi -i "color=white,scale=1920x1080" -lavfi threshold output.mp4
+
+******* How to set threshold?
+
+Threshold would apply to a grayscale image, i.e. the extracted blue/yellow chroma plane.  
+
+1. Trial and error
+2. Some percentage of gray values (e.g. gray50, although I don't think ffmpeg uses those terms)
+
+2018-03-12-10:49
+Let's go with trial and error.
+
+Made small, blue/yellow plane version of class.mp4:
+
+#+BEGIN_SRC sh
+ffmpeg -i ../class.mp4 -vf "extractplanes=u, format=yuv420p, scale=160:-1" ../classPlaneU160.mp4
+#+END_SRC
+
+Tried 0x909090 for high threshold.
+
+#+BEGIN_SRC sh
+ffmpeg -hide_banner -i ../classPlaneU160.mp4 -f lavfi -i "color=0x909090,scale=160x90" -f lavfi -i "color=black,scale=160x90" -f lavfi -i "color=white,scale=160x90" -lavfi threshold outputHi.mp4
+#+END_SRC
+
+Tried 0x707070 for low threshold.  Note reversed position of black and white lavfi devices.  In both cases white = card.  
+
+#+BEGIN_SRC sh
+ffmpeg -hide_banner -i ../classPlaneU160.mp4 -f lavfi -i "color=0x707070,scale=160x90" -f lavfi -i "color=white,scale=160x90" -f lavfi -i "color=black,scale=160x90" -lavfi threshold outputLo.mp4
+#+END_SRC
+
+******* TODO Version where above threshold pixels show their original (input) colors:
+
+(First make class160.mp4 to put it in same pixel format:)
+
+#+BEGIN_SRC 
+ffmpeg -i class.mp4 -filter_complex 'scale=160:-1, format=yuv420p' class160.mp4
+#+END_SRC
+
+#+BEGIN_SRC sh
+ffmpeg -hide_banner -i classPlaneU160.mp4 -f lavfi -i "color=0x909090,scale=160x90" -f lavfi -i "color=black,scale=160x90" -i class160.mp4 -lavfi threshold outputHiColor.mp4
+#+END_SRC
+
+2018-03-17-20:25
+[Didn't work!]
+
+2018-03-20-08:43
+
+Worked!
+
+#+BEGIN_SRC sh
+ffmpeg -vcodec png -i outputLo.mp4 -i class.mp4 -filter_complex '[0:v] scale=160:-1, colorkey=color=0xFFFFFF:similarity=0.5 [in1]; [1:v] scale=160:-1 [in2]; [in2][in1] overlay=shortest=1' outputLoColor.mp4
+
+ffmpeg -vcodec png -i outputHi.mp4 -i class.mp4 -filter_complex '[0:v] scale=160:-1, colorkey=color=0xFFFFFF:similarity=0.5 [in1]; [1:v] scale=160:-1 [in2]; [in2][in1] overlay=shortest=1' outputHiColor.mp4
+#+END_SRC
+
+***** DONE Calculate proportions differently for blue and yellow
+
+Try defining max value separately for each color instead of using the overall max in write_mat_to_csv.m?
+
+***** DONE Exclude bottom of video from matlab script that counts pixels
+
+It looks like the image of the duel video displayed on my laptop heavily influences number of blue pixels counted!
+
+Try leaving out top 20% and bottom 1/3.
+
+***** DONE Account for effect of distance on number of card pixels
+
+I decided that the function for scaling pixels by vertical position should be the normal visual angle function: 
+
+atan(card size/distance from camera)
+
+
+Card size is only really important as a scaling factor (a constant) for the atan function, so I will estimate both card size and the max distance from camera for now.
+
+The function to use in Octave will be something like:
+
+scalingFactor = 1/(atan(vis. angle*constant));
+
+Use meshgrid to set range of y positions to 0-1. Don't really use zero, use epsilon or something.  
+
+Known that (i.e. not just an estimate) cards are 8.5 x 5.5 inches.  Round this 6 inches for a single dimension, esp. because that equals 0.5 ft.
+
+ESTIMATE that distance from podium to back of classroom is 20 ft. 
+
+So ratio at max distance is very approx. .5/20 = 1/40. 
+
+DON'T FORGET to square the scaling factor!  Because pixels are proportionate to area, not to vis. angle. 
+
+****** Older notes
+
+The cards of the two students in the foremost row appear to have a strongly disproportionate effect on the count.  
+
+Something simple like: 
+
+- Weight of pixels inversely proportional to height in video frame?
+
+Potentially simply approach in Octave/matlab: 
+
+1. Make matrix where pixel values indicate inverse size scaling factor based on distance from camera
+2. After identifying pixels to count as blue or yellow, mulitply them by the corresponding pixels in the size scaling matrix. 
+
+Size scaling matrix:
+
+- Greater y value (in world space: higher y = higher off floor) corresponds to greater distance from camera
+- X values away from center of the image correspond to greater distance from camera.
+
+Potential issues:
+
+- Camera not totally steady
+- Still need to exclude bottom of video, because no cards can appear there (or very top, for that matter)
+- Still need to account for and exclude "background" pixels: non-card pixels.  Take mean value of all frames??
+
+*** DONE Generate series of png images to use as overlays for each frame
+
+Put them in a subdir called ./frames/ (my choice of name).
+
+Source of code below:
+https://superuser.com/questions/868204/overlay-transparent-animation-over-video-with-ffmpeg
+
+#+NAME: convert_gen_frames
+#+BEGIN_SRC sh
+convert -size 1280x720 xc:transparent -background transparent \
+    -channel RGBA -fill '#0FF8' \
+    -draw 'polygon 200, 600, 200, 20, 600, 50, 600, 50' -fill '#0008' \
+    -draw 'polygon 200, 660, 200, 40, 660, 70, 660, 70' -fill '#fFF8' \
+    -draw 'polygon 200, 500, 200, 00, 500, 30, 500, 30' -channel RGBA \
+    -depth 8 -blur '10x5' test.png
+#+END_SRC
+
+*** DONE Make video from png frames
+**** DONE Bash script to generate png images
+
+Made dir: ./code/
+
+./code/gen_frames.sh
+
+NOTE: Decided to start by making version that makes overlays for the video of the class holding up their papers, but final version will need to make overlays to apply to the "watched" video: once_final_duel.mp4.
+
+***** Draw bars using SVG paths
+
+Excellent link explaining svg path syntax:
+http://www.imagemagick.org/Usage/draw/#paths
+
+Example from that link:
+#+NAME: convert_svg_path_draw
+#+BEGIN_SRC sh
+  convert -size 100x60 xc:skyblue -fill white -stroke black \
+          -draw "path 'M 40,10 20,50 90,10 70,40 Z'" path_closed.gif
+#+END_SRC
+
+*** DONE Overlay video on top of other video
+
+Link:
+https://superuser.com/questions/868204/overlay-transparent-animation-over-video-with-ffmpeg
+
+**** DONE Note about transparency/alpha in PNG images
+
+My first try to generate images with transparent background failed: background was black, even though Imagemagick display tool showed transparent checkerboard background.
+
+Don't use xc:transparent option (or at least not just that); maybe xc:none instead?
+
+Also pay attention to output format, maybe.  See these links:
+
+http://www.imagemagick.org/discourse-server/viewtopic.php?t=22101
+http://www.imagemagick.org/Usage/masking/#alpha_background
+https://www.imagemagick.org/discourse-server/viewtopic.php?t=25816
+http://www.imagemagick.org/Usage/masking/#alpha_set
+
+2018-03-09-13:53
+Still not fixed after trying xc:none and PNG:[file name]!
+
+2018-03-10-21:45
+Yes, it seemed to work with these options in convert command (in gen_frames.sh):
+
+#+BEGIN_SRC 
+xc:none
+#+END_SRC
+
+and 
+
+#+BEGIN_SRC 
+PNG32:[output file name]
+#+END_SRC
+
+**** DONE Workaround to make black pixels work like transparent ones with ffmpeg overlay fitler
+
+Could try instructions from link below, but poster said that probably not completely satisfactory:
+
+https://stackoverflow.com/questions/38578363/ffmpeg-overlaying-one-video-on-another-one-and-making-black-pixels-transparent
+
+2018-03-10-21:44
+[Didn't end up needing to try it.]
+
+**** DONE Try using -vcodec png option when creating video
+
+As found here:
+https://stackoverflow.com/questions/644684/turn-image-sequence-into-video-with-transparency
+
+2018-03-09-14:00
+Tried this:
+
+#+BEGIN_SRC 
+ffmpeg -framerate 30 -pattern_type glob -i 'frames/frame*.png' -vcodec png barsPng.mp4
+#+END_SRC
+
+2018-03-10-21:44
+[It worked!]
+
+**** DONE Learn to take only first N frames from videos for ffmpeg, to shorten testing time
+
+Apparently this needs to be done by specifying time, not number of frames:
+
+https://superuser.com/questions/459313/how-to-cut-at-exact-frames-using-ffmpeg
+
+Also see for good guide:
+
+https://trac.ffmpeg.org/wiki/Seeking
+
+***** Make short versions of bars.mp4 and class.mp4
+
+#+BEGIN_SRC sh
+ffmpeg -ss 0 -t 10 -i ../class.mp4 -c copy ../classShort.mp4
+
+or
+
+ffmpeg -ss 00:00:00 -i ../class.mp4 -to 00:00:10 -c copy ../classShort.mp4
+#+END_SRC
+
+**** Solution!
+
+Use the -vcodec png command to compose the video from the png frames.  I also assume the PNG32: output syntax was essential, but haven't tested this.  
+
+#+BEGIN_SRC 
+ffmpeg -i ../classShort.mp4 -i barsPngShort.mp4 -filter_complex 'overlay' outPngShort.mp4
+#+END_SRC
+
+**** DONE Move bars higher up in frames
+
+Reduce distance between bottom of bars and top of frame by 50%.
+
+**** DONE Overlay bars on "watched" video instead of on "class" video
+***** DONE Crop duel video to same duration as class video
+
+Watched class video: can see duel video playing on my laptop at bottom of frame.  Estimated where duel video ends within class video, found that time point in once_upon_duel.mp4: 4:59.  class.mp4 is 2:43 duration, so start at 4:59 - 2:43 = 2:16 point in duel video, go 2:43 seconds:
+
+#+BEGIN_SRC sh
+ffmpeg -ss 00:02:16 -i ../once_upon_duel.mp4 -t 2:43 -c copy ../duel_watched.mp4
+#+END_SRC
+
+***** Overlay bars video on duel video
+
+Different aspect ratios for the two, I think.  
+
+#+BEGIN_SRC sh
+anthony@anthony-VirtualBox:code$ ffprobe -hide_banner -show_streams ../duel_watched.mp4 | grep width
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '../duel_watched.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf57.83.100
+  Duration: 00:02:46.57, start: -0.040000, bitrate: 373 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 640x270 [SAR 1:1 DAR 64:27], 236 kb/s, 25 fps, 25 tbr, 12800 tbn, 50 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+    Stream #0:1(eng): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 130 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+width=640
+coded_width=640
+#+END_SRC
+
+class video: 640x360 (if it had W 640)
+duel video: 640x270
+
+So scale bars video (same dims as class vid.) to W = 640, overlay as normal.  This will overlay it in upper left corner, which is where I want it.  Presumably extra height that would extend down past bottom of duel vid. will just not appear, and duel vid dimensions will be dims of output?   (Yep.)
+
+#+BEGIN_SRC sh
+ffmpeg -hide_banner -i once_upon_duel.mp4 -i bars.mp4 -vf "[1:v] scale=640:-1 [bars]; [0:v][bars] overlay=shortest=1" overlaidDuel.mp4
+#+END_SRC
+
+"shortest=1" option useful in case the two videos are not exactly the same length, I guess.
+
+***** Overlay text labels for the blue and yellow bars in the final video
+
+Use ffmpeg drawtext filter.
+
+From ffmpeg filter docs; example:
+
+drawtext="fontsize=30:fontfile=FreeSerif.ttf:text='hello world':x=(w-text_w)/2:y=(h-text_h)/2"
+
+** DONE Make mosaic of videos
+
+From this link:
+https://trac.ffmpeg.org/wiki/Create%20a%20mosaic%20out%20of%20several%20input%20videos
+
+#+NAME: ffmpeg_mosaic
+#+BEGIN_SRC sh
+ffmpeg
+	-i 1.avi -i 2.avi -i 3.avi -i 4.avi
+	-filter_complex "
+		nullsrc=size=640x480 [base];
+		[0:v] setpts=PTS-STARTPTS, scale=320x240 [upperleft];
+		[1:v] setpts=PTS-STARTPTS, scale=320x240 [upperright];
+		[2:v] setpts=PTS-STARTPTS, scale=320x240 [lowerleft];
+		[3:v] setpts=PTS-STARTPTS, scale=320x240 [lowerright];
+		[base][upperleft] overlay=shortest=1 [tmp1];
+		[tmp1][upperright] overlay=shortest=1:x=320 [tmp2];
+		[tmp2][lowerleft] overlay=shortest=1:y=240 [tmp3];
+		[tmp3][lowerright] overlay=shortest=1:x=320:y=240
+	"
+	-c:v libx264 output.mkv
+#+END_SRC
+
+The "shortest=1" option is critical because the nullsrc will go on forever otherwise.
+
+My try:
+
+#+NAME: ffmpeg_mosaic
+#+BEGIN_SRC sh
+ffmpeg
+	-i  outputHi.mp4 -i ../class160.mp4 -i outputLo.mp4
+	-filter_complex "
+		nullsrc=size=160x270 [base];
+		[base][0:v] overlay=shortest=1 [tmp1];
+		[tmp1][1:v] overlay=shortest=1:y=90 [tmp2];
+		[tmp2][2:v] overlay=shortest=1:y=180
+	"
+	mosaic160.mp4
+#+END_SRC
+
+One line:
+
+#+BEGIN_SRC sh
+ffmpeg -i outputHi.mp4 -i ../class160.mp4 -i outputLo.mp4 -filter_complex "nullsrc=size=160x270 [base]; [base][0:v] overlay=shortest=1 [tmp1]; [tmp1][1:v] overlay=shortest=1:y=90 [tmp2]; [tmp2][2:v] overlay=shortest=1:y=180" mosaic160.mp4
+#+END_SRC
+
+Also:
+
+#+BEGIN_SRC sh
+ffmpeg -ss 0 -i class.mp4 -to 20 -filter_complex "[0:v] scale=960:-1, boxblur=lr=10:cr=0, format=yuv420p [scaled]; [scaled] split=4 [in1][in2][in3][in4]; [in2] extractplanes=y, scale=320x180 [yp]; [in3] lutyuv=y=128:v=128, scale=320x180 [up]; [in4] lutyuv=y=128:u=128, scale=320x180 [vp]; nullsrc=size=1280x540 [base]; [base][in1] overlay=shortest=1 [tmp1]; [tmp1][yp] overlay=x=960 [tmp2]; [tmp2][up] overlay=x=960:y=180 [tmp3]; [tmp3][vp] overlay=x=960:y=360" mosaicShortYUV480.mp4
+#+END_SRC
+
+*** DONE Show luminance-only blurred video of class holding up paper
+
+This appears in the mosaic, described above.
+
+Command is: 
+
+#+BEGIN_SRC sh
+ffmpeg -i [input file] -filter_complex "boxblur=lr=10:cr=0"
+#+END_SRC
+
+"lr" and "cr" mean luminance and chroma radius, respectively.  The example above blurs the luminance but not the chroma channel, which accomplishes the goal of obscuring facial identity and also creates a nice effect where the color cards stand out because of their chromatic edges (which are not blurred). 
+
+*** DONE Overlay text to label mosaic component videos
+
+Seems like would need to do this within the command that makes the mosaic.
+
+This filter command below references coords of one of the YUV components that appear in a column on right side of the overall mosaic; i.e. this filter command needs to be applied to the mosaic component before it is stitched into the mosaic, otherwise coords would need to be different.
+
+#+BEGIN_SRC 
+drawtext=fontsize=12:text='Y (luminance)':x=$barLeftXWatched+$barSpaceWatched+$barWWatched:y=$barBaseYWatched+lh+16:fontcolor=yellow@0.8
+#+END_SRC
+
+To express coords as a fraction of the video's dims, use an ffmeq expresssion that will be evaluated
+
+#+BEGIN_SRC
+drawtext=x=round(w*$BAR_LEFT_X):y=round(h*$BAR_BASE_Y)+(2*lh)
+#+END_SRC
+
+Notes:
+- BAR_LEFT_X is a var. that has been defined in the bash script containing this code: a proportion [0-1].  Similar for other all caps vars.  
+- "h" and "w" are built-in vars for the drawtext filter: the input video's height and width.
+- "x" and "y" are built-in vars for the drawtext filter. 
+- "lh" is a built-in var. for "line height" of the text as it will be drawn, in pixels. 
+- "yellow@0.8" inicates yellow font color with alpha=0.8 (more opaque).  
+
+**** DONE Try running this in gen_bars.sh script
+
+2018-03-18-12:23
+
+I tried putting this at end of gen_bars.sh, but havent' run it yet. 
+
+#+BEGIN_SRC sh
+ffmpeg -i ../vid/class.mp4 -i ../vid/bars.mp4 -ss 0 -to 20 -filter_complex \
+"[0:v] scale=960:-1, boxblur=lr=10:cr=0, format=yuv420p [classScaled]; \
+[1:v] scale=960:-1, format=yuv420p [barsScaled]; \
+[classScaled] split=4 [in1][in2][in3][in4]; \
+[in1][barsScaled] overlay=shortest=1 [overlaid]; \
+[in2] extractplanes=y, scale=320x180, drawtext='text='Y luminance':x='round( w * $BAR_LEFT_X )':y='lh':fontcolor=black' [yp]; \
+[in3] lutyuv=y=128:v=128, scale=320x180, drawtext='text='U yellow-blue':x='round(w * $BAR_LEFT_X)':y='lh':fontcolor=yellow' [up]; \
+[in4] lutyuv=y=128:u=128, scale=320x180, drawtext='text='V green-red':x='round(w * $BAR_LEFT_X)':y='lh':fontcolor=green' [vp]; \
+nullsrc=size=1280x540 [base]; \
+[base][overlaid] overlay=shortest=1 [tmp1]; \
+[tmp1][yp] overlay=x=960 [tmp2]; \
+[tmp2][up] overlay=x=960:y=180 [tmp3]; \
+[tmp3][vp] overlay=x=960:y=360"\
+../vid/mosaicShortYUV480Bars.mp4
+#+END_SRC
+
+2018-03-19-11:20
+
+It worked!
+
+NOTE: CAN'T do "format=yuv420p" until AFTER "overlay" filter done, or else no transparency.  
+
+*** Try hstack fitler instead of overlay to combine videos
+
+This works.  Example that I tried:
+
+#+BEGIN_SRC 
+ffmpeg -i classShort320.mp4 -filter_complex '[0:v] histogram=levels_mode=logarithmic:level_height=50, scale=-1:180 [hist]; [0:v][hist] hstack=shortest=1' testOut.mp4
+#+END_SRC
+
+*** Try using geq to assign input video dims to variables
+
+Use store st() and load ld() functions with geq filter.
+
+** DONE Show ciescope ffmpeg filter display
+
+2018-03-18-11:48
+
+(Decided against this.)
+
+** Octave code to plot visual angle transform functions
+
+horPos.m, in ./code directory.  Name is misnomer, because also plots vertical position function.
+
+** wxMaxima files
+
+There are two of them, one for vertical and one for horizontal position visual angle transform.  I exported one of them to several different formats, mostly to see what was possible.  Export formats include tex (latex) and html (which mostly includes latex-like code -- "mathjax"?).
+
+** Summary document
+
+I.e. different from this here one; one to show other people.
+
+Make it in markdown format, I guess. Can embed videos that way?  Make it as slideshow?
+
+** New way to apply vis. angle transforms using lut2 filter
+*** DONE Make single frame image representing the perspective transforms
+
+Do this so that only have to calculate the long equations for vert, hor position once.  Then make a video by repeating that one image for as many frames as are in the video that needs to be transformed (the thresholded ones), and use lut2 filter to mulitply the threshold vid pixels by the grayscale values in the new vid.  Should be much faster than the very, very slow process of applying geq filter to calculate (the same) equations over and over for each frame of threshold vids, which is how gen_frames.sh works right now.
+
+Helpful links:
+
+https://stackoverflow.com/questions/25891342/creating-a-video-from-a-single-image-for-a-specific-duration-in-ffmpeg
+
+https://stackoverflow.com/questions/24986208/overlay-timelapse-video-on-solid-background-colour-using-ffmpeg
+
+http://ffmpeg.org/ffmpeg-filters.html#color
+
+https://superuser.com/questions/688015/ffmpeg-create-a-video-from-image-frame-with-a-start-and-a-cout
+
+
+<2018-11-09 Fri>
+
+Copied gen_frames.sh to test.sh to try making a single-frame white video.
+
+https://www.ffmpeg.org/ffmpeg-devices.html#lavfi
+
+
+<2018-11-10 Sat>
+
+That worked!  
+
+Now there is a single-frame video named white.mp4 that gets the transform applied to it, with resulting single-frame video named whiteOut.mp4.  
+
+Needed to adjust SAR of whiteOut.mp4 before could apply lut2 filter to whiteOut and outputLo.mp4.  I assume scale and format have to be the same too; didn't test whether necessary, just coded that from the first try.  
+
+Everything for white.mp4 and therefore whiteOut.mp4 handled by this line:
+
+#+BEGIN_SRC 
+
+ffmpeg -f lavfi -i "color=c=white,scale=320x180,format=yuv420p,setsar=1:1" -frames:v 1 -r 30 ${VID_DIR}/white.mp4
+
+#+END_SRC
+
+https://www.ffmpeg.org/ffmpeg-all.html#setdar_002c-setsar
+
+
+Need to set name for white/whiteOut as variables at top of script, I guess.
+
+Also need to save a static image version of the single-frame video so can display it.  It is grayscale and looks nice.  
+
+Here is the line that applies the lut2 filter trick:
+
+#+BEGIN_SRC 
+
+ffmpeg -y -hide_banner -i ${VID_DIR}/whiteOut.mp4 -i ${VID_DIR}/outputLo.mp4 -filter_complex "lut2='(x*y)/256'" ${VID_DIR}/atanOut.mp4
+
+#+END_SRC
+
+Needed to divide pixel values by some largish number to avoid weird effects after multiplying the pixels from both input videos together using lut2.  256 seems to work well, but it's based on trial and error.  I couldn't remember (or maybe I never knew) what pixel depth is for these videos, and can't remember how to find that out quickly, although it must use ffprobe somehow.  
+
+IMPORTANT:
+
+Changed this line:
+
+#+BEGIN_SRC 
+            (p(X,Y)/8) * 1/(${VERT_VIS_ANG}/${VERT_VIS_ANG_BASE}) * 1/(${HOR_VIS_ANG}/${HOR_VIS_ANG_BASE}) \
+#+END_SRC
+
+... to this (changed "/8" to "/16")
+
+#+BEGIN_SRC 
+            (p(X,Y)/16) * 1/(${VERT_VIS_ANG}/${VERT_VIS_ANG_BASE}) * 1/(${HOR_VIS_ANG}/${HOR_VIS_ANG_BASE}) \
+#+END_SRC
+
+2018-11-10-11:16
+
+Applied these changes to the version of gen_frames.sh in .../writing_assignment dir.
+
+Changed name of file from "whiteOut" to "transformGray" in all scripts.
+
+*** Canonical version of gen_frames.sh
+
+As of NOW ...
+
+2018-11-10-16:06
+
+... the CANONICAL VERSION of gen_frames.sh is either of these:
+
+/home/anthony/Google Drive/teaching/SP/SP_2018/in-class/motion_cinema/code/test.sh
+/home/anthony/Google Drive/teaching/SP/SP_2018/writing_assignment/code/gen_frames.sh
+
+These currently have DIFFERENT divisors for pixel values in the transform section; would be nice to have a common one, even if it's a variable that captures something like maximum intensity in video.  
+
+** TODO IMPROVEMENTS
+
+**** TODO Set divisors for pixel values
+NEED: to set divisors by some non-ad-hoc quantity.  Calculate max value of any pixel across whole video to find range of values?  Then divide all pixels by that value?
+
+**** TODO Mosaic of distance transform
+
+TODO: Have script make video mosaic illustrating the distance transform.  Mosaic will have (blurred) vid of class holding up cards on left (and largest), right three panels (arranged in one column) are 1) outputLo.mp4, thresholdGray.mp4 (will look like a static image, because it is just one frame that will loop), outputLoAtanGray.mp4.
+
+**** TODO Generate line graph of frame values
+
+Add code to generate the line plot using gnuplot.
+
+** DONE Improvements in progress
+
+**** DONE Complete gen_frames.sh script, no Octave
+2018-04-08-14:20
+
+Since last Tuesday (?) script has worked on its own.  
+
+This is a major change, because it uses ffmpeg and gnuplot to do the video analysis and data file creation, instead of the super-buggy Octave aviread functions.  Octave is therefore no longer required for the script to work!  Only non-standard (Ubuntu) dependency is the latest version (3.4??) of ffmpeg.
+
+**** DONE Mathematically correct Y position transform
+
+This means: apply a function that scales pixel values according to card vis. angle size, using a function that estimates the vis. angle from the Y position in the frame.  
+
+adc began using graphical diagrams (made in Inkscape and Krita on SurfacePro 4) to figure out the trigonometry.  
+
+adc also installed wmMaxima on Ubuntu VM so can check/plot/simplify the final trig. expressions.
+
+Files:
+
+Working out trig. expressions:
+
+#+BEGIN_SRC 
+~/Dropbox/tmp/sketchpad.kra
+~/Dropbox/tmp/sketchpad_2018-04-07.kra (saved as separate file after orig. sketchpad.kra got too big, plan to split off again periodically as well).
+#+END_SRC
+
+
+Inskape diagrams (and annotations on diagrams):
+
+#+BEGIN_SRC 
+~/Google Drive/teaching/SP_2018/in-class/motion_cinema/vertical_position_vis_angle.svg
+~/Dropbox/tmp/vert_pos_vis_ang_MARK_UP.kra
+#+END_SRC
+
+* Notes
+
+<2019-03-06 Wed>
+
+Copied and moved this file to 
+
+#+BEGIN_SRC 
+~/Google Drive/teaching/activities/video_voting/
+#+END_SRC
+
+and will continue development on versions of files here.  
