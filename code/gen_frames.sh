@@ -19,10 +19,10 @@ THRESHOLD_FLAG=0;
 TRANSFORM_FLAG=0;
 
 # Analyze thresholded vids to make data file
-ANALYZE_DATA_FLAG=1;
+ANALYZE_DATA_FLAG=0;
 
 # Run for loop that generates frames of "bars" video as PNG images
-FRAME_LOOP_FLAG=1;
+FRAME_LOOP_FLAG=0;
 
 # Make bars video of the PNG image frames
 COMPOSE_BARS_VID_FLAG=1;
@@ -31,7 +31,7 @@ COMPOSE_BARS_VID_FLAG=1;
 OVERLAY_VIDS_FLAG=1;
 
 # Make video mosaics
-MOSAIC_FLAG=1;
+MOSAIC_FLAG=0;
 
 
 #-------------------------------------------------
@@ -45,7 +45,18 @@ MOSAIC_FLAG=1;
 
 BASE_DIR=".."
 
-VID_DIR=$BASE_DIR"/vid"
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# VERY IMPORTANT for each project to have its OWN VID_DIR !
+#   Several files that will get written have generic names
+#   that won't be different for versions of this here
+#   script, even if variables at top of this script are 
+#   given unique names.  Need separate dirs. to keep them
+#   from getting used by other versions of this script.  
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+VID_DIR=$BASE_DIR"/vid_good_bad"
+
+
 
 # Dir. holding (in subdir) the canonical version of this script (from which copies can be made for specific projects)
 #   as well as other frequently used materials
@@ -54,8 +65,11 @@ VID_DIR=$BASE_DIR"/vid"
 CANONICAL_DIR=~/Google\ Drive/teaching/activities/video_voting
 
 
-# NOTE that this is in cwd, NOT base_dir
-FRAME_DIR=./frames
+# NOTE that this is in vid dir
+FRAME_DIR=$VID_DIR"/frames"
+
+# NOTE that this is in vid dir
+DATA_DIR=$VID_DIR"/data"
 
 
 
@@ -66,7 +80,7 @@ FRAME_DIR=./frames
 
 FRAME_FILE_BASE=frame;
 
-FRAME_FILE_EXT=.png;
+FRAME_FILE_EXT=.png; # includes dot
 
 
 
@@ -77,10 +91,10 @@ FRAME_FILE_EXT=.png;
 # For the "duel" video, can just use the copy adc put in the directory that holds the canonical version of this script
 # NOTE: remember that need double quotes around path containing $CANONICAL_DIR
 #   Will ALSO need to put quotes around $WATCHED_VID_FILE when used below
-WATCHED_VID_FILE="$CANONICAL_DIR/vid/once_upon_duel.mp4";
+WATCHED_VID_FILE="$BASE_DIR/memory_test_good_bad/memory_test_good_bad.mp4";
 
 # Video of the class holding up their pieces of paper while watching the "WATCHED_VID"
-CLASS_VID_FILE=$VID_DIR/class.mp4;
+CLASS_VID_FILE=$VID_DIR/classGoodBad.mp4;
 
 
 
@@ -119,8 +133,20 @@ MOSAIC_CLASS_YUV_VID=$VID_DIR/mosaicShortYUV480Bars.mp4
 # File containing two numbers per line, for number of blue and yellow pixels respectively, comma-separated
 # This is based on an analysis of the CLASS_VID_FILE, _not_ the video that the class watched.
 
-DATA_FILE=frame_pixel_counts.csv
+DATA_FILE=$DATA_DIR"/frame_pixel_counts.csv"
 
+
+# THRESHOLDING PARAMETERS
+#--------------------------
+
+# How to threshold the yellow-blue (video U-plane) channel.
+# Counting these pixels will be basis of drawing the heights of the blue/yellow bars
+#   that will be overlaid.
+# Expressed as fractions of 1, what low values to keep to identify yellow,
+#   what high values to keep to identify blue.
+
+loThresh=.4;
+hiThresh=.55;
 
 
 # VIDEO PROCESSING PARAMETERS
@@ -136,27 +162,27 @@ DATA_FILE=frame_pixel_counts.csv
 # If cards fill frame from top to bottom, the CROP_* params would be 0 and 1.
 # Y position is measured from top of frame.
 
-CROP_TOP=.35;
+CROP_TOP=.3;
 CROP_BOT=.65;
 
 
 # Minimum distance from the camera to the closest row of desks, and to the farthest row of desks
 # In units of card HEIGHT:
 
-MAX_DISTANCE=19; 
+MAX_DISTANCE=20; 
 MIN_DISTANCE=3;
 
 # Height of camera above the top of the lowest card position, in units of card HEIGHT
 #   This is non-intuitive; is based on how adc originally framed the trigonometry
 # In practical terms, height from surface of a desk to camera, minus one card height. 
-CAMERA_HEIGHT=2;
+CAMERA_HEIGHT=1;
 
 # HORIZONTAL position
 # Measured from left to right
 # If cards fill frame from left to right, these params would be 0 and 1.
 
 CROP_L=0;
-CROP_R=.9;
+CROP_R=1;
 
 
 # In units of card WIDTH:
@@ -166,7 +192,7 @@ CROP_R=.9;
 # This can correspond to either the width of a row of students in the classroom (if the entire row is visible in the frame)
 #  OR to the width of the PORTION of a row of students that appears in the frame.
 
-ROW_WIDTH=50;
+ROW_WIDTH=28;
 
 # Relative to leftmost extent of the row referenced by ROW_WIDTH.
 # Positive means to the right of that point, negative means to the left.
@@ -174,7 +200,7 @@ ROW_WIDTH=50;
 # If camera was to the right of the ROW_WIDTH, then CAMERA_LAT_POS will have a positive value greater than ROW_WIDTH.
 # If camera was centered and aimed perpendicularly at the rows of students, then CAMERA_LAT_POS will be exactly equal half of ROW_WIDTH.
 
-CAMERA_LAT_POS=55;
+CAMERA_LAT_POS=30;
 
 
 
@@ -189,7 +215,7 @@ TRIM_START_TIME=00:00:00;
 #   this avoids having threshold vid with blank frames that get counted as zeros
 #   when doing data analysis for frame height calculation
 # m:ss format
-TRIM_DURATION=2:23;
+TRIM_DURATION=4:00;
 
 
 # Integer number of seconds, or (??) m:ss format
@@ -226,6 +252,9 @@ BAR_W=0.05;
 # Spacing between the two bars
 BAR_SPACE=0.025;
 
+# Text labels that go below bars
+TEXT_BLUE=BAD; # "Bad" image submitted
+TEXT_YELLOW=GOOD; # "Good" image submitted
 
 
 #---------------------------------------------------------------------------------
@@ -302,15 +331,51 @@ threshInVid=${VID_DIR}/classPlaneU${SMALL_VID_W}.mp4
 # "-y" flag means YES, OVERWRITE WITHOUT CONFIRMING
 #                -----------------------------------
 
-ffmpeg -y -hide_banner -i $CLASS_VID_FILE -vf "extractplanes=u, format=yuv420p, scale=${SMALL_VID_W}:-1, setsar=1:1" $threshInVid
+# Convert to remainder-less hexadecimal
+
+loDec=$(echo "$loThresh*255" | bc) # get fraction of 255 (bash can't handle non-integers)
+loRounded=${loDec%.*} # round to integer so that hexadecimal RGB number will be valid 
+loHex=$(echo "obase=16; $loRounded" | bc) # convert to single hexadecimal number
+loHexThresh="0x$loHex$loHex$loHex" # plug single hex number into format is 0xRRGGBB (R=G=B in this case, for grayscale)
+#echo $loHexThresh
+
+
+hiDec=$(echo "$hiThresh*255" | bc)
+hiRounded=${hiDec%.*}
+hiHex=$(echo "obase=16; $hiRounded" | bc)
+hiHexThresh="0x$hiHex$hiHex$hiHex" 
+#echo $hiHexThresh
+
+
+
+if [[ -f $threshInVid ]]; then
+
+    echo "Video file $threshInVid already exists; NOT overwriting."
+
+else
+    
+    # Trim watched video to interval that corresponds to class video
+
+    echo "Isolating U plane (yellow-blue) of $CLASS_VID_FILE to make $threshInVid file."
+
+    # format option is important so that this vid will match format of others in mosaic (see below)
+    
+    ffmpeg -y -hide_banner -i $CLASS_VID_FILE -vf "extractplanes=u, format=yuv420p, scale=${SMALL_VID_W}:-1, setsar=1:1" $threshInVid
+    
+fi
+
+
+
+
+
 
 
 # Threshold values (originally color=0x707070 for Lo, color=0x909090 for Hi) were determined by trial and error by adc
 # TODO: NEED to replace literal numbers w/ vars for scale option
 
-ffmpeg -y -hide_banner -i $threshInVid -f lavfi -i "color=0x707070,scale=320x240" -f lavfi -i "color=white,scale=320x240" -f lavfi -i "color=black,scale=320x240" -lavfi threshold ${VID_DIR}/outputLo.mp4
+ffmpeg -y -hide_banner -i $threshInVid -f lavfi -i "color=$loHexThresh,scale=320x240" -f lavfi -i "color=white,scale=320x240" -f lavfi -i "color=black,scale=320x240" -lavfi threshold ${VID_DIR}/outputLo.mp4
 
-ffmpeg -y -hide_banner -i $threshInVid -f lavfi -i "color=0x898989,scale=320x240" -f lavfi -i "color=black,scale=320x240" -f lavfi -i "color=white,scale=320x240" -lavfi threshold ${VID_DIR}/outputHi.mp4
+ffmpeg -y -hide_banner -i $threshInVid -f lavfi -i "color=$hiHexThresh,scale=320x240" -f lavfi -i "color=black,scale=320x240" -f lavfi -i "color=white,scale=320x240" -lavfi threshold ${VID_DIR}/outputHi.mp4
 
 
 fi  # THRESHOLD_FLAG
@@ -435,51 +500,63 @@ fi  # TRANSFORM_FLAG
 
 if [[ $ANALYZE_DATA_FLAG == 1 ]]; then
 
+
+
+# MAKE DATA_DIR IF NECESSARY
+
+  if [[ -d $DATA_DIR ]]; then
+      echo "$DATA_DIR already exists, will overwrite files there."
+  else
+      mkdir $DATA_DIR
+      echo "Made directory $DATA_DIR."
+  fi
+
+    
 # Analyze output videos
 # Note that text files will go to code dir, not vid_dir
-ffprobe -f lavfi movie=${VID_DIR}/outputLoAtanGray.mp4,signalstats -show_entries frame_tags=lavfi.signalstats.YAVG > sigstatsLo.txt
-ffprobe -f lavfi movie=${VID_DIR}/outputHiAtanGray.mp4,signalstats -show_entries frame_tags=lavfi.signalstats.YAVG > sigstatsHi.txt
+ffprobe -f lavfi movie=${VID_DIR}/outputLoAtanGray.mp4,signalstats -show_entries frame_tags=lavfi.signalstats.YAVG > $DATA_DIR"/sigstatsLo.txt"
+ffprobe -f lavfi movie=${VID_DIR}/outputHiAtanGray.mp4,signalstats -show_entries frame_tags=lavfi.signalstats.YAVG > $DATA_DIR"/sigstatsHi.txt"
 
 # Use regular expression to make file with one line per frame, only data is the YAVG number alone
 # Use trick of setting gawk Field Separator (FS) to equal sign, because ffprobe output specified below has the desired numbers after equal signs.
 
-grep '^TAG' sigstatsLo.txt | gawk -F"=" '{print $2}' > yAvgLo.txt
-grep '^TAG' sigstatsHi.txt | gawk -F"=" '{print $2}' > yAvgHi.txt
+grep '^TAG' $DATA_DIR"/sigstatsLo.txt" | gawk -F"=" '{print $2}' > $DATA_DIR"/yAvgLo.txt"
+grep '^TAG' $DATA_DIR"/sigstatsHi.txt" | gawk -F"=" '{print $2}' > $DATA_DIR"/yAvgHi.txt"
 
 
 # Remove zeros from (end of) file, replace with last non-zero value
 # ASSUMES that first line's number is not zero!
 # adc added 2019-04-17
-gawk '{ if($1==0) {print prev} else {prev=$1; print prev} }' yAvgLo.txt > yAvgLoFixed.txt
-gawk '{ if($1==0) {print prev} else {prev=$1; print prev} }' yAvgHi.txt > yAvgHiFixed.txt
+gawk '{ if($1==0) {print prev} else {prev=$1; print prev} }' $DATA_DIR"/yAvgLo.txt" > $DATA_DIR"/yAvgLoFixed.txt"
+gawk '{ if($1==0) {print prev} else {prev=$1; print prev} }' $DATA_DIR"/yAvgHi.txt" > $DATA_DIR"/yAvgHiFixed.txt"
 
 # Smooth the time series
 
-gnuplot -e "set samples ${nFrames}; set table 'tableLo.dat'; plot 'yAvgLoFixed.txt' smooth bezier"
-gnuplot -e "set samples ${nFrames}; set table 'tableHi.dat'; plot 'yAvgHiFixed.txt' smooth bezier"
+gnuplot -e "set samples ${nFrames}; set table '$DATA_DIR/tableLo.dat'; plot '$DATA_DIR/yAvgLoFixed.txt' smooth bezier"
+gnuplot -e "set samples ${nFrames}; set table '$DATA_DIR/tableHi.dat'; plot '$DATA_DIR/yAvgHiFixed.txt' smooth bezier"
 
 
 
 # Remove gnuplot header from .dat files
 # Incidentally, this includes a blank line
 
-cat tableLo.dat | gawk 'NR > 4 {print $2}' > dataLo.txt
-cat tableHi.dat | gawk 'NR > 4 {print $2}' > dataHi.txt 
+cat $DATA_DIR"/tableLo.dat" | gawk 'NR > 4 {print $2}' > $DATA_DIR"/dataLo.txt"
+cat $DATA_DIR"/tableHi.dat" | gawk 'NR > 4 {print $2}' > $DATA_DIR"/dataHi.txt"
 
 
 # Remove final line from file (it is blank)
 
-sed -i '$d' dataLo.txt
-sed -i '$d' dataHi.txt
+sed -i '$d' $DATA_DIR"/dataLo.txt"
+sed -i '$d' $DATA_DIR"/dataHi.txt"
 
 # Normalize ranges of data points
 # Do separately for the two colors (which correspond to Lo and Hi thresholded videos)
 
-minValLo=$(sort -n dataLo.txt | head -1);
-maxValLo=$(sort -n dataLo.txt | tail -1);
+minValLo=$(sort -n $DATA_DIR"/dataLo.txt" | head -1);
+maxValLo=$(sort -n $DATA_DIR"/dataLo.txt" | tail -1);
 
-minValHi=$(sort -n dataHi.txt | head -1);
-maxValHi=$(sort -n dataHi.txt | tail -1);
+minValHi=$(sort -n $DATA_DIR"/dataHi.txt" | head -1);
+maxValHi=$(sort -n $DATA_DIR"/dataHi.txt" | tail -1);
 
 
 # Calculate larger of the two ranges (for either outputLo or outputHi)
@@ -498,8 +575,8 @@ else
 fi
 
 
-gawk -v minVal="$minValLo" -v commonRange="$commonRange" '{ prop = ($1 - minVal) / commonRange; print prop }' dataLo.txt > dataLoNormed.txt
-gawk -v minVal="$minValHi" -v commonRange="$commonRange" '{ prop = ($1 - minVal) / commonRange; print prop }' dataHi.txt > dataHiNormed.txt
+gawk -v minVal="$minValLo" -v commonRange="$commonRange" '{ prop = ($1 - minVal) / commonRange; print prop }' $DATA_DIR"/dataLo.txt" > $DATA_DIR"/dataLoNormed.txt"
+gawk -v minVal="$minValHi" -v commonRange="$commonRange" '{ prop = ($1 - minVal) / commonRange; print prop }' $DATA_DIR"/dataHi.txt" > $DATA_DIR"/dataHiNormed.txt"
 
 
 # Concatenate the two data text files by columns into on csv file
@@ -510,7 +587,7 @@ gawk -v minVal="$minValHi" -v commonRange="$commonRange" '{ prop = ($1 - minVal)
 # "next" says to stop immediately (ignoring the second set of curly braces) and move on
 #    to next record.  
 
-gawk ' NR==FNR {a[FNR]=$1; next} {print  a[FNR] "," $1}' dataLoNormed.txt dataHiNormed.txt > $DATA_FILE;
+gawk ' NR==FNR {a[FNR]=$1; next} {print  a[FNR] "," $1}' $DATA_DIR"/dataLoNormed.txt" $DATA_DIR"/dataHiNormed.txt" > $DATA_FILE;
 
 
 # Delete the last line, which is just "0,0" and one too many compared to number of files.  (Maybe it gets created by bezier smoothing?)
@@ -638,7 +715,7 @@ if [[ $FRAME_LOOP_FLAG == 1 ]]; then
       if (( $f % 100 == 0 ))
       then
   	# First characters erase old line, so line can appear to update itself
-  	echo -ne "\e[0K\r Drew frame number $f"
+  	echo -ne "\e[0K\r Drew frame number $f of $nFrames"
       fi
       
       
@@ -655,7 +732,7 @@ if [[ $COMPOSE_BARS_VID_FLAG == 1 ]]; then
   # Compose video from the PNG frames
   # "-vcodec png" option is critical for transparency to work
 
-  ffmpeg -y -hide_banner -framerate 30 -pattern_type glob -i 'frames/frame*.png' -vcodec png $BARS_VID_FILE
+  ffmpeg -y -hide_banner -framerate 30 -pattern_type glob -i $FRAME_DIR'/'$FRAME_FILE_BASE'*'$FRAME_FILE_EXT -vcodec png $BARS_VID_FILE
 
   fi # COMPOSE_VARS_VID_FLAG
 
@@ -680,7 +757,9 @@ if [[ $OVERLAY_VIDS_FLAG == 1 ]]; then
   # Overlay bars on interval of "watched" video that corresponds to class video, and draw text labels below bars
   # "lh" option represents "line height" of the text
 
-   ffmpeg -y -hide_banner -i $WATCHED_VID_TRIMMED -i $BARS_VID_FILE -filter_complex "[1:v] scale=$watchedW:-1 [bars]; [0:v][bars] overlay=shortest=1 [overlaid]; [overlaid] drawtext=fontsize=12:text='ZOOM':x=$barLeftXWatched:y=$barBaseYWatched+lh+48:fontcolor=deepskyblue@0.8:shadowcolor=black, drawtext=fontsize=12:text='MOVE':x=$barLeftXWatched+$barSpaceWatched+$barWWatched:y=$barBaseYWatched+lh+48:fontcolor=yellow@0.8:shadowcolor=black" $WATCHED_OVERLAID_VID_FILE
+  # 2019-04-28 try using BAR_SPACE param as amount to set text below bottom of bar; previously this had been coded with a number that had to be changed for each video.
+  
+   ffmpeg -y -hide_banner -i $WATCHED_VID_TRIMMED -i $BARS_VID_FILE -filter_complex "[1:v] scale=$watchedW:-1 [bars]; [0:v][bars] overlay=shortest=1 [overlaid]; [overlaid] drawtext=fontsize=12:text=$TEXT_BLUE:x=$barLeftXWatched:y=$barBaseYWatched+lh+$BAR_SPACE:fontcolor=deepskyblue@0.8:shadowcolor=black, drawtext=fontsize=12:text=$TEXT_YELLOW:x=$barLeftXWatched+$barSpaceWatched+$barWWatched:y=$barBaseYWatched+lh+$BAR_SPACE:fontcolor=yellow@0.8:shadowcolor=black" $WATCHED_OVERLAID_VID_FILE
   
 #  ffmpeg -y -hide_banner -i $WATCHED_VID_TRIMMED -i $BARS_VID_FILE -filter_complex "[1:v] scale=$classW:-1 [bars]; [0:v][bars] overlay=shortest=1 [overlaid]; [overlaid] drawtext=fontsize=12:text='ZOOM':x=$barLeftX:y=$barBaseY+lh+16:fontcolor=deepskyblue@0.8:shadowcolor=black, drawtext=fontsize=12:text='MOVE':x=$barLeftX+$barSpace+$barW:y=$barBaseY+lh+16:fontcolor=yellow@0.8:shadowcolor=black" $WATCHED_OVERLAID_VID_FILE
 
@@ -738,39 +817,6 @@ fi # MOSAIC_FLAG
 exit 1
 
 
-
-
-
-
-
-
-
-# ffmpeg -y -hide_banner -i ../vid/class.mp4 -i ../vid/bars.mp4 -ss 0 -to $MOSAIC_DURATION -filter_complex \
-# "[0:v] scale=960:-1, boxblur=lr=10:cr=0, format=yuv420p [classScaled]; \
-# [1:v] scale=960:-1, format=yuv420p [barsScaled]; \
-# [classScaled] split=4 [in1][in2][in3][in4]; \
-# [in1][barsScaled] overlay=shortest=1 [overlaid]; \
-# [in2] extractplanes=y, scale=320x180, drawtext='text='Y luminance':x='round( w * $BAR_LEFT_X )':y='lh':fontcolor=black' [yp]; \
-# [in3] lutyuv=y=128:v=128, scale=320x180, drawtext='text='U yellow-blue':x='round(w * $BAR_LEFT_X)':y='lh':fontcolor=yellow' [up]; \
-# [in4] lutyuv=y=128:u=128, scale=320x180, drawtext='text='V green-red':x='round(w * $BAR_LEFT_X)':y='lh':fontcolor=green' [vp]; \
-# nullsrc=size=1280x540 [base]; \
-# [base][overlaid] overlay=shortest=1 [tmp1]; \
-# [tmp1][yp] overlay=x=960 [tmp2]; \
-# [tmp2][up] overlay=x=960:y=180 [tmp3]; \
-# [tmp3][vp] overlay=x=960:y=360" \
-# ../vid/mosaicShortYUV480Bars.mp4
-
-
-
-# exit 1
-
-
-
-
-
-# # For testing
-# BAR_LEFT_X=.1;
-# ffmpeg -y -hide_banner -i ../vid/class.mp4 -i ../vid/bars.mp4 -ss 0 -to 20 -filter_complex        "[0:v] scale=960:-1, boxblur=lr=10:cr=0 [classScaled]; [1:v] scale=960:-1 [barsScaled]; [classScaled] split=4 [in1][in2][in3][in4]; [in1][barsScaled] overlay=shortest=1 [overlaid]; [in2] extractplanes=y, scale=320x180, format=yuv420p, drawtext="text="Y luminance":x="round( w * $BAR_LEFT_X )":y="lh":fontcolor=black" [yp]; [in3] lutyuv=y=128:v=128, scale=320x180, format=yuv420p, drawtext="text="U yellow-blue":x="round(w * $BAR_LEFT_X)":y="lh":fontcolor=yellow" [up]; [in4] lutyuv=y=128:u=128, scale=320x180, format=yuv420p, drawtext="text="V green-red":x="round(w * $BAR_LEFT_X)":y="lh":fontcolor=green" [vp]; nullsrc=size=1280x540 [base]; [base][overlaid] overlay=shortest=1 [tmp1]; [tmp1][yp] overlay=x=960 [tmp2]; [tmp2][up] overlay=x=960:y=180 [tmp3]; [tmp3][vp] overlay=x=960:y=360 "  ../vid/mosaicShortYUV480Bars.mp4
 
 
 

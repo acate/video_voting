@@ -11,12 +11,12 @@
 # 0 turns off, 1 turns on
 
 # Make thresholded YUV U plane vids
-THRESHOLD_FLAG=0;
+THRESHOLD_FLAG=1;
 
 # Transform thresholded vids to account for smaller visual angle
 #   at higher vertical positions in frames.
 # (I.e. "Father Ted:" small and far away)
-TRANSFORM_FLAG=1;
+TRANSFORM_FLAG=0;
 
 # Analyze thresholded vids to make data file
 ANALYZE_DATA_FLAG=0;
@@ -87,6 +87,8 @@ CLASS_VID_FILE=$VID_DIR/class.mp4;
 # NAMES for video files that DON'T EXIST yet,
 #   but which will be made by script
 
+
+
 # Name to give a version of the "watched" video that get trimmed to the match the length of the class vid.
 WATCHED_VID_TRIMMED=$VID_DIR/watched_vid_trimmed.mp4;
 
@@ -120,6 +122,18 @@ MOSAIC_CLASS_YUV_VID=$VID_DIR/mosaicShortYUV480Bars.mp4
 DATA_FILE=frame_pixel_counts.csv
 
 
+# THRESHOLDING PARAMETERS
+#--------------------------
+
+# How to threshold the yellow-blue (video U-plane) channel.
+# Counting these pixels will be basis of drawing the heights of the blue/yellow bars
+#   that will be overlaid.
+# Expressed as fractions of 1, what low values to keep to identify yellow,
+#   what high values to keep to identify blue.
+
+loThresh=.4;
+hiThresh=.6;
+
 
 # VIDEO PROCESSING PARAMETERS
 #-----------------------------
@@ -134,27 +148,27 @@ DATA_FILE=frame_pixel_counts.csv
 # If cards fill frame from top to bottom, the CROP_* params would be 0 and 1.
 # Y position is measured from top of frame.
 
-CROP_TOP=.2;
-CROP_BOT=.6;
+CROP_TOP=.35;
+CROP_BOT=.65;
 
 
 # Minimum distance from the camera to the closest row of desks, and to the farthest row of desks
 # In units of card HEIGHT:
 
-MAX_DISTANCE=40;
-MIN_DISTANCE=10;
+MAX_DISTANCE=19; 
+MIN_DISTANCE=3;
 
 # Height of camera above the top of the lowest card position, in units of card HEIGHT
 #   This is non-intuitive; is based on how adc originally framed the trigonometry
 # In practical terms, height from surface of a desk to camera, minus one card height. 
-CAMERA_HEIGHT=6;
+CAMERA_HEIGHT=2;
 
 # HORIZONTAL position
 # Measured from left to right
 # If cards fill frame from left to right, these params would be 0 and 1.
 
 CROP_L=0;
-CROP_R=1;
+CROP_R=.9;
 
 
 # In units of card WIDTH:
@@ -164,7 +178,7 @@ CROP_R=1;
 # This can correspond to either the width of a row of students in the classroom (if the entire row is visible in the frame)
 #  OR to the width of the PORTION of a row of students that appears in the frame.
 
-ROW_WIDTH=20;
+ROW_WIDTH=50;
 
 # Relative to leftmost extent of the row referenced by ROW_WIDTH.
 # Positive means to the right of that point, negative means to the left.
@@ -172,7 +186,7 @@ ROW_WIDTH=20;
 # If camera was to the right of the ROW_WIDTH, then CAMERA_LAT_POS will have a positive value greater than ROW_WIDTH.
 # If camera was centered and aimed perpendicularly at the rows of students, then CAMERA_LAT_POS will be exactly equal half of ROW_WIDTH.
 
-CAMERA_LAT_POS=10;
+CAMERA_LAT_POS=55;
 
 
 
@@ -181,8 +195,13 @@ CAMERA_LAT_POS=10;
 # hh:mm:ss format
 TRIM_START_TIME=00:00:00;
 
+# Can do this to find duration of class vid:
+# ffprobe -v quiet -select_streams v -show_streams class.mp4 | grep duration
+# When not integer value, round up to make TRIM_DURATION longer than class.mp4;
+#   this avoids having threshold vid with blank frames that get counted as zeros
+#   when doing data analysis for frame height calculation
 # m:ss format
-TRIM_DURATION=2:43;
+TRIM_DURATION=2:23;
 
 
 # Integer number of seconds, or (??) m:ss format
@@ -218,6 +237,10 @@ BAR_W=0.05;
 
 # Spacing between the two bars
 BAR_SPACE=0.025;
+
+# Text labels that go below bars
+TEXT_BLUE=SIM; # "Similar" image submitted
+TEXT_YELLOW=MAIN; # The main image submitted for writing assignment
 
 
 
@@ -295,15 +318,28 @@ threshInVid=${VID_DIR}/classPlaneU${SMALL_VID_W}.mp4
 # "-y" flag means YES, OVERWRITE WITHOUT CONFIRMING
 #                -----------------------------------
 
-ffmpeg -y -hide_banner -i $CLASS_VID_FILE -vf "extractplanes=u, format=yuv420p, scale=${SMALL_VID_W}:-1" $threshInVid
+# Convert to remainder-less hexadecimal
+
+loDec=$("$loThresh*255" | bc) # get fraction of 255 (bash can't handle non-integers)
+loRounded=${loDec%.*} # round to integer so that hexadecimal RGB number will be valid 
+loHex=$(echo "obase=16; $loRounded" | bc) # convert to single hexadecimal number
+loHexThresh="0x$loHex$loHex$loHex" # plug single hex number into format is 0xRRGGBB (R=G=B in this case, for grayscale)
+
+hiDec=$("$hiThresh*255" | bc)
+hiRounded=${hiDec%.*}
+hiHex=$(echo "obase=16; $hiRounded" | bc)
+hiHexThresh="0x$hiHex$hiHex$hiHex" 
 
 
-# Threshold values (e.g. color=0x909090) were determined by trial and error by adc
+ffmpeg -y -hide_banner -i $CLASS_VID_FILE -vf "extractplanes=u, format=yuv420p, scale=${SMALL_VID_W}:-1, setsar=1:1" $threshInVid
+
+
+# Threshold values (originally color=0x707070 for Lo, color=0x909090 for Hi) were determined by trial and error by adc
 # TODO: NEED to replace literal numbers w/ vars for scale option
 
-ffmpeg -y -hide_banner -i $threshInVid -f lavfi -i "color=0x707070,scale=320x180" -f lavfi -i "color=white,scale=320x180" -f lavfi -i "color=black,scale=320x180" -lavfi threshold ${VID_DIR}/outputLo.mp4
+ffmpeg -y -hide_banner -i $threshInVid -f lavfi -i "color=$loHexThresh,scale=320x240" -f lavfi -i "color=white,scale=320x240" -f lavfi -i "color=black,scale=320x240" -lavfi threshold ${VID_DIR}/outputLo.mp4
 
-ffmpeg -y -hide_banner -i $threshInVid -f lavfi -i "color=0x909090,scale=320x180" -f lavfi -i "color=black,scale=320x180" -f lavfi -i "color=white,scale=320x180" -lavfi threshold ${VID_DIR}/outputHi.mp4
+ffmpeg -y -hide_banner -i $threshInVid -f lavfi -i "color=$hiHexThresh,scale=320x240" -f lavfi -i "color=black,scale=320x240" -f lavfi -i "color=white,scale=320x240" -lavfi threshold ${VID_DIR}/outputHi.mp4
 
 
 fi  # THRESHOLD_FLAG
@@ -313,7 +349,7 @@ fi  # THRESHOLD_FLAG
 if [[ $TRANSFORM_FLAG == 1 ]]; then
 
 
-    ffmpeg -y -hide_banner -f lavfi -i "color=c=white,scale=320x180,format=yuv420p,setsar=1:1" -frames:v 1 -r 30 ${VID_DIR}/white.mp4
+    ffmpeg -y -hide_banner -f lavfi -i "color=c=white,scale=320x240,format=yuv420p,setsar=1:1" -frames:v 1 -r 30 ${VID_DIR}/white.mp4
     
 
     # Transform thresholded videos to account for smaller visual angle of farther away cards
@@ -375,20 +411,20 @@ if [[ $TRANSFORM_FLAG == 1 ]]; then
 # Use conditional (if) to mask out bottom of image (recall that Y values are zero at top, max at bottom)
 # "if(a,b) implies "if not a, set equal to zero"
 
-    ffmpeg -y -hide_banner -i ${vid_dir}/white.mp4 -vf \
+    ffmpeg -y -hide_banner -i ${VID_DIR}/white.mp4 -vf \
        "format=gray,\
         geq=lum_expr=\
-        '${y_store}; ${x_store};\
+        '${Y_STORE}; ${X_STORE};\
          if( \
-            between(y,h*${crop_top},h*${crop_bot}), \
+            between(Y,H*${CROP_TOP},H*${CROP_BOT}), \
             if( \
-               between(x,w*${crop_l},w*${crop_r}), \
+               between(X,W*${CROP_L},W*${CROP_R}), \
                round( \
-                     (p(x,y)/64) * 1/(${vert_vis_ang}/${vert_vis_ang_base}) * 1/(${hor_vis_ang}/${hor_vis_ang_base}) \
+                     (p(X,Y)/255) * 1/(${VERT_VIS_ANG}/${VERT_VIS_ANG_BASE}) * 1/(${HOR_VIS_ANG}/${HOR_VIS_ANG_BASE}) \
                     ) \
               ) \
            )'" \
-       ${vid_dir}/transformGray.mp4;
+       ${VID_DIR}/transformGray.mp4;
 
 
 # Save image of transformGray transformation:
@@ -399,9 +435,9 @@ if [[ $TRANSFORM_FLAG == 1 ]]; then
     
 # APPARENTLY NOT A PROBLEM THAT THE TWO INPUT VIDEOS ARE DIFFERENT LENGTHS (WHITEOUT.MP4 IS ONE FRAME LONG)
 
-    ffmpeg -y -hide_banner -i ${VID_DIR}/transformGray.mp4 -i ${VID_DIR}/outputLo.mp4 -filter_complex "lut2='(x*y)/256'" ${VID_DIR}/outputLoAtanGray.mp4
+    ffmpeg -y -hide_banner -i ${VID_DIR}/transformGray.mp4 -i ${VID_DIR}/outputLo.mp4 -filter_complex "lut2='(x*y)/8'" ${VID_DIR}/outputLoAtanGray.mp4
 
-    ffmpeg -y -hide_banner -i ${VID_DIR}/transformGray.mp4 -i ${VID_DIR}/outputHi.mp4 -filter_complex "lut2='(x*y)/256'" ${VID_DIR}/outputHiAtanGray.mp4    
+    ffmpeg -y -hide_banner -i ${VID_DIR}/transformGray.mp4 -i ${VID_DIR}/outputHi.mp4 -filter_complex "lut2='(x*y)/8'" ${VID_DIR}/outputHiAtanGray.mp4    
     
     
     
@@ -440,10 +476,16 @@ grep '^TAG' sigstatsLo.txt | gawk -F"=" '{print $2}' > yAvgLo.txt
 grep '^TAG' sigstatsHi.txt | gawk -F"=" '{print $2}' > yAvgHi.txt
 
 
+# Remove zeros from (end of) file, replace with last non-zero value
+# ASSUMES that first line's number is not zero!
+# adc added 2019-04-17
+gawk '{ if($1==0) {print prev} else {prev=$1; print prev} }' yAvgLo.txt > yAvgLoFixed.txt
+gawk '{ if($1==0) {print prev} else {prev=$1; print prev} }' yAvgHi.txt > yAvgHiFixed.txt
+
 # Smooth the time series
 
-gnuplot -e "set samples ${nFrames}; set table 'tableLo.dat'; plot 'yAvgLo.txt' smooth bezier"
-gnuplot -e "set samples ${nFrames}; set table 'tableHi.dat'; plot 'yAvgHi.txt' smooth bezier"
+gnuplot -e "set samples ${nFrames}; set table 'tableLo.dat'; plot 'yAvgLoFixed.txt' smooth bezier"
+gnuplot -e "set samples ${nFrames}; set table 'tableHi.dat'; plot 'yAvgHiFixed.txt' smooth bezier"
 
 
 
@@ -666,7 +708,10 @@ if [[ $OVERLAY_VIDS_FLAG == 1 ]]; then
 
   # Overlay bars on interval of "watched" video that corresponds to class video, and draw text labels below bars
   # "lh" option represents "line height" of the text
-  ffmpeg -y -hide_banner -i $WATCHED_VID_TRIMMED -i $BARS_VID_FILE -filter_complex "[1:v] scale=640:-1 [bars]; [0:v][bars] overlay=shortest=1 [overlaid]; [overlaid] drawtext=fontsize=12:text='ZOOM':x=$barLeftXWatched:y=$barBaseYWatched+lh+16:fontcolor=deepskyblue@0.8:shadowcolor=black, drawtext=fontsize=12:text='MOVE':x=$barLeftXWatched+$barSpaceWatched+$barWWatched:y=$barBaseYWatched+lh+16:fontcolor=yellow@0.8:shadowcolor=black" $WATCHED_OVERLAID_VID_FILE
+
+   ffmpeg -y -hide_banner -i $WATCHED_VID_TRIMMED -i $BARS_VID_FILE -filter_complex "[1:v] scale=$watchedW:-1 [bars]; [0:v][bars] overlay=shortest=1 [overlaid]; [overlaid] drawtext=fontsize=12:text=$TEXT_BLUE:x=$barLeftXWatched:y=$barBaseYWatched+lh+48:fontcolor=deepskyblue@0.8:shadowcolor=black, drawtext=fontsize=12:text=$TEXT_YELLOW:x=$barLeftXWatched+$barSpaceWatched+$barWWatched:y=$barBaseYWatched+lh+48:fontcolor=yellow@0.8:shadowcolor=black" $WATCHED_OVERLAID_VID_FILE
+  
+#  ffmpeg -y -hide_banner -i $WATCHED_VID_TRIMMED -i $BARS_VID_FILE -filter_complex "[1:v] scale=$classW:-1 [bars]; [0:v][bars] overlay=shortest=1 [overlaid]; [overlaid] drawtext=fontsize=12:text='ZOOM':x=$barLeftX:y=$barBaseY+lh+16:fontcolor=deepskyblue@0.8:shadowcolor=black, drawtext=fontsize=12:text='MOVE':x=$barLeftX+$barSpace+$barW:y=$barBaseY+lh+16:fontcolor=yellow@0.8:shadowcolor=black" $WATCHED_OVERLAID_VID_FILE
 
 fi # OVERLAY_VIDS_FLAG
 
@@ -705,14 +750,14 @@ ffmpeg -y -hide_banner -i $CLASS_VID_BLURRED -i $CLASS_OVERLAID_VID_FILE -ss 0 -
 "[0:v] scale=960:-1, boxblur=lr=10:cr=0, format=yuv420p [classScaled]; \
 [1:v] scale=960:-1, format=yuv420p [overlaidScaled]; \
 [classScaled] split=3 [in1][in2][in3]; \
-[in1] extractplanes=y, scale=320x180, drawtext='text='Y luminance':x='round( w * $BAR_LEFT_X )':y='lh':fontcolor=black' [yp]; \
-[in2] lutyuv=y=128:v=128, scale=320x180, drawtext='text='U yellow-blue':x='round(w * $BAR_LEFT_X)':y='lh':fontcolor=yellow' [up]; \
-[in3] lutyuv=y=128:u=128, scale=320x180, drawtext='text='V green-red':x='round(w * $BAR_LEFT_X)':y='lh':fontcolor=green' [vp]; \
-nullsrc=size=1280x540 [base]; \
+[in1] extractplanes=y, scale=320x240, drawtext='text='Y luminance':x='round( w * $BAR_LEFT_X )':y='lh':fontcolor=black' [yp]; \
+[in2] lutyuv=y=128:v=128, scale=320x240, drawtext='text='U yellow-blue':x='round(w * $BAR_LEFT_X)':y='lh':fontcolor=yellow' [up]; \
+[in3] lutyuv=y=128:u=128, scale=320x240, drawtext='text='V green-red':x='round(w * $BAR_LEFT_X)':y='lh':fontcolor=green' [vp]; \
+nullsrc=size=1280x720 [base]; \
 [base][overlaidScaled] overlay=shortest=1 [tmp1]; \
 [tmp1][yp] overlay=x=960 [tmp2]; \
-[tmp2][up] overlay=x=960:y=180 [tmp3]; \
-[tmp3][vp] overlay=x=960:y=360" \
+[tmp2][up] overlay=x=960:y=240 [tmp3]; \
+[tmp3][vp] overlay=x=960:y=480" \
 $MOSAIC_CLASS_YUV_VID
 
 fi # MOSAIC_FLAG
