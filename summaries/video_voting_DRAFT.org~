@@ -1,0 +1,73 @@
+#+TITLE: XXXXXX title XXXXXXX
+#+DATE: 2019-08-23
+#+AUTHOR: Anthony D. Cate
+
+#+OPTIONS: H:9
+
+* Overview
+
+This project created a method for classroom students to vote for one of two choices at each moment in time while watching videos.  
+
+* Outline of technique
+
+- Video is taken with a cell phone or other camera.  
+    - Only two measurements of the camera are required: height from floor, and horizontal (azimuthal) position relative to a horizontal edge of the camera's field of view.  
+
+- Students hold up cards of two colors.  The colors should occupy opposite coordinates in a circular hue space.  Currently the two colors are cyan and yellow. 
+
+- The instructor starts recording video of the class, and then begins playing the video that students will watch while voting.  
+    - The time when the watched video starts playing needs to be determinable from the class recording video.
+
+- Any kind of video can be used that prompts different votes at different points in time.
+
+- Students hold up colored cards to indicate votes while the video is playing.  Students can hold up both cards at the same time if that makes sense for the voting.  Cards are placed flat on desks when a given vote is not being indicated.  
+    - Votes indicate judgments about the content of the watched video.
+
+- Automated analysis of the class recording will provide measures of the total propotion of votes at each time point, relative to the minimum and maximum number of votes presented.  
+    - Therefore, it is ideal that the class recording video begin with all students holding down both cards, and then all students raising one color and then the other in unison.  This will provide a baseline section of the video for zero votes (of either color) and the appearance of the maximum number of votes.  
+
+* Briefer summary
+
+- Students watch a video and signal two different judgments about the content by holding up two different colored cards.
+
+- The instructor records a video of the class holding up the cards.  The original video will be converted to a blurred version that preserves the color information (and thus the number of cards held up at each time point) but which obscures faces to protect students' identities.  
+
+- The instructor runs automated analysis code that produces a version of the video that the student watched, with an animated bar graph superimposed on it that displays the number of votes for both judgments at each point in time.  
+
+- The class can watch this video to understand and evaluate how the class voted as a whole, and discuss the accuracy or agreement of the judgments.  
+
+* How it works
+
+** Opposite sides of hue space
+
+** YUV video encoding
+
+** Trigonometry to scale the area of the cards
+
+** Baseline measures to scale the number of votes
+
+* What this method teaches
+
+** Color space
+
+*** Difference between hue, saturation, and lightness
+
+**** YUV video encoding
+
+**** Blurring of lightness contrast but not hue and saturation
+
+*** Circularity of hue space
+
+** Importance of baseline for experimental measures
+
+** Perspective projection
+
+* Activities that can use this method
+
+** Perceptual judgments of motion
+
+** Memory retrieval
+
+** Any binary decision
+
+

@@ -791,6 +791,22 @@ Inskape diagrams (and annotations on diagrams):
 ~/Dropbox/tmp/vert_pos_vis_ang_MARK_UP.kra
 #+END_SRC
 
+* Summary documents
+
+2019-08-28
+
+Started making these a few days ago. 
+
+#+BEGIN_SRC 
+~/Google Drive/teaching/activities/video_voting/summaries/video_voting_DRAFT.org
+#+END_SRC
+
+Wrote bash script to generate screenshots for same timepoint from several different videos, and make a few other images including gnuplot line graph:
+
+#+BEGIN_SRC 
+~/Google Drive/teaching/activities/video_voting/summaries/make_screenshots_video_voting.sh
+#+END_SRC
+
 * Notes
 
 <2019-03-06 Wed>

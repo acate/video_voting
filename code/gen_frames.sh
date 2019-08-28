@@ -143,7 +143,9 @@ DATA_FILE=$DATA_DIR"/frame_pixel_counts.csv"
 # Counting these pixels will be basis of drawing the heights of the blue/yellow bars
 #   that will be overlaid.
 # Expressed as fractions of 1, what low values to keep to identify yellow,
-#   what high values to keep to identify blue.
+#   (lower = more conservative, fewer values kept)
+#   what high values to keep to identify blue
+#   (higher = more conservative, fewer values kept).
 
 loThresh=.4;
 hiThresh=.55;
