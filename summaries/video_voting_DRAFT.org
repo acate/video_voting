@@ -36,6 +36,77 @@ This project created a method for classroom students to vote for one of two choi
 
 - The class can watch this video to understand and evaluate how the class voted as a whole, and discuss the accuracy or agreement of the judgments.  
 
+* Schematic diagram
+
+The class watches a video.
+
+
+[[./media/watchedFrame.png]]
+
+\\
+\\
+\\
+
+The instructor takes a video of the class to measure how many cards are held up at different points in time.  The luminance channel (black/white information) is immediately blurred so that students can't be identified.  The color information is left unblurred.  
+
+[[./media/classBlurredFrame.png]]
+
+
+\\
+\\
+\\
+
+
+The video is analyzed by splitting it into three component channels commonly used for encoding video.
+
+[[./media/mosaicFrame.png]]
+
+\\
+\\
+\\
+
+The channel that measures yellow-blue differences is analyzed to get a count of how many yellow and blue cards the students hold up at each point in time. 
+
+[[./media/classPlaneU320Frame.png]]
+
+
+\\
+\\
+\\
+
+[[./media/video_voting_threshold_perspective.png]]
+
+
+\\
+\\
+\\
+
+
+[[./media/video_voting_baseline.png]]
+
+
+\\
+\\
+\\
+
+
+[[./media/frame_pixel_counts.png]]
+
+
+\\
+\\
+\\
+
+[[./media/watchedBarsOverlaidFrame.png]]
+
+
+\\
+\\
+\\
+
+
+
+
 * How it works
 
 ** YUV video encoding
