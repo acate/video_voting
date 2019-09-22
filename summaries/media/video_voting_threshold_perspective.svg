@@ -429,8 +429,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.3103842"
-     inkscape:cx="409.13655"
-     inkscape:cy="542.82076"
+     inkscape:cx="410.28125"
+     inkscape:cy="365.83615"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -459,7 +459,8 @@
      id="layer1"
      transform="translate(0,-17.6)">
     <g
-       id="g25657">
+       id="g25657"
+       transform="matrix(0.89263658,0,0,0.87755374,3.130131,3.1048626)">
       <g
          transform="matrix(0.94547637,0,0,0.94547637,8.3873965,12.508145)"
          id="g1055">
@@ -499,44 +500,44 @@
       </g>
     </g>
     <image
-       y="172.42915"
-       x="80.704208"
+       y="154.42072"
+       x="75.169662"
        id="image911"
        xlink:href="data:image/png;base64,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 "
        preserveAspectRatio="none"
-       height="40.86869"
-       width="54.491585" />
+       height="35.864471"
+       width="48.641182" />
     <g
        style="color:#ffffff;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter"
        id="g959"
-       transform="matrix(0.25015729,0,0,0.25015729,-138.14884,407.08671)" />
+       transform="matrix(0.22329955,0,0,0.21952647,-120.18658,360.34533)" />
     <g
        style="color:#000000;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter"
        id="g1121"
-       transform="matrix(0.25015729,0,0,0.25015729,-138.14884,407.08671)" />
+       transform="matrix(0.22329955,0,0,0.21952647,-120.18658,360.34533)" />
     <g
        style="color:#000000;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter"
        id="g1143"
-       transform="matrix(0.25015729,0,0,0.25015729,-138.14884,407.08671)" />
+       transform="matrix(0.22329955,0,0,0.21952647,-120.18658,360.34533)" />
     <g
        style="color:#ffffff;fill:none;stroke:#009e73;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter"
        id="g1159"
-       transform="matrix(0.25015729,0,0,0.25015729,-138.14884,407.08671)" />
+       transform="matrix(0.22329955,0,0,0.21952647,-120.18658,360.34533)" />
     <g
        style="color:#000000;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter"
        id="g1161"
-       transform="matrix(0.25015729,0,0,0.25015729,-138.14884,407.08671)" />
+       transform="matrix(0.22329955,0,0,0.21952647,-120.18658,360.34533)" />
     <g
        style="color:#000000;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter"
        id="g1163"
-       transform="matrix(0.25015729,0,0,0.25015729,-138.14884,407.08671)" />
+       transform="matrix(0.22329955,0,0,0.21952647,-120.18658,360.34533)" />
     <g
        style="color:#000000;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter"
        id="g1169"
-       transform="matrix(0.25015729,0,0,0.25015729,-138.14884,407.08671)" />
+       transform="matrix(0.22329955,0,0,0.21952647,-120.18658,360.34533)" />
     <g
        id="g1031"
-       transform="matrix(0.94547637,0,0,0.94547637,3.3842505,-1.7793564)">
+       transform="matrix(0.84396679,0,0,0.82970632,6.1510368,1.5433817)">
       <path
          inkscape:connector-curvature="0"
          id="rect1017"
@@ -558,7 +559,7 @@
     </g>
     <g
        id="g1041"
-       transform="matrix(0.94547637,0,0,0.94547637,8.3873965,-1.7793564)">
+       transform="matrix(0.84396679,0,0,0.82970632,10.617028,1.5433817)">
       <path
          inkscape:connector-curvature="0"
          id="path1037"
@@ -575,7 +576,7 @@
     </g>
     <g
        id="g1045"
-       transform="matrix(0.94547637,0,0,0.94547637,3.3842505,-1.7793564)">
+       transform="matrix(0.84396679,0,0,0.82970632,6.1510368,1.5433817)">
       <path
          inkscape:connector-curvature="0"
          id="path1033"
@@ -593,18 +594,18 @@
     <path
        inkscape:connector-curvature="0"
        id="path893"
-       d="m 75.538687,66.318033 0.18193,6.816693 c 0.252224,9.450587 50.540683,3.362552 59.435273,6.632283 8.89459,3.26973 9.23022,13.236937 9.23022,13.236937"
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1364)"
+       d="m 70.558726,61.3025 0.162398,5.982015 c 0.225144,8.293398 45.114466,2.95082 53.054096,5.820185 7.93964,2.869363 8.23923,11.616123 8.23923,11.616123"
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.62446111;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1364)"
        sodipodi:nodetypes="cssc" />
     <path
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#TriangleOutM)"
-       d="m 75.538687,66.881931 0,25.911477"
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.62446111;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#TriangleOutM)"
+       d="M 70.558726,61.797351 V 84.536065"
        id="path895"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <path
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker16992)"
-       d="m 115.6825,142.81829 v 26.76527"
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.62446111;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker16992)"
+       d="m 106.39256,128.43559 v 23.48796"
        id="path16822"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
@@ -612,32 +613,34 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path29809"
-       d="m 100.54869,142.81829 v 26.76527"
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker29979)" />
+       d="m 92.88357,128.43559 v 23.48796"
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.62446111;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker29979)" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path38613"
-       d="M 115.6825,213.39833 V 240.1636"
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker38785)" />
+       d="m 106.39256,190.37337 v 23.48796"
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.62446111;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker38785)" />
     <path
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker39121)"
-       d="M 100.54869,213.39833 V 240.1636"
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#bfbfbf;stroke-width:0.62446111;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker39121)"
+       d="m 92.88357,190.37337 v 23.48796"
        id="path38615"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <rect
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.66104788;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.58506906;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect927"
-       width="64.902931"
-       height="51.11483"
-       x="112.55752"
-       y="18.32667" />
+       width="57.934731"
+       height="44.85601"
+       x="103.60309"
+       y="19.1875" />
     <flowRoot
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       id="flowRoot929"><flowRegion
+       id="flowRoot929"
+       transform="matrix(0.89263658,0,0,0.87755374,3.130131,3.1048626)"><flowRegion
          id="flowRegion931"><use
+           transform="matrix(1.1202767,0,0,1.1395314,-3.506613,-3.5380883)"
            x="0"
            y="0"
            xlink:href="#rect927"
@@ -652,73 +655,82 @@
          id="flowPara971">Create two new images that show the locations of yellow and blue things by selecting only the low or high values.</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot937"
-       style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:25%;letter-spacing:0px;word-spacing:0px"><flowRegion
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:25%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.89263658,0,0,0.87755374,3.130131,3.1048626)"><flowRegion
          id="flowRegion939"><rect
            id="rect941"
            width="59.797569"
            height="86.23867"
            x="417.36261"
            y="46.356693" /></flowRegion><flowPara
-         id="flowPara943"></flowPara></flowRoot>    <flowRoot
+         id="flowPara943" /></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot945"
-       style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:25%;letter-spacing:0px;word-spacing:0px"><flowRegion
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:25%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.89263658,0,0,0.87755374,3.130131,3.1048626)"><flowRegion
          id="flowRegion947"><rect
            id="rect949"
            width="55.729706"
            height="108.61191"
            x="424.27798"
            y="25.203812" /></flowRegion><flowPara
-         id="flowPara951"></flowPara></flowRoot>    <flowRoot
+         id="flowPara951" /></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot953"
-       style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:25%;letter-spacing:0px;word-spacing:0px"><flowRegion
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:25%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.89263658,0,0,0.87755374,3.130131,3.1048626)"><flowRegion
          id="flowRegion955"><rect
            id="rect957"
            width="11.7968"
            height="93.154037"
            x="477.97375"
            y="39.44133" /></flowRegion><flowPara
-         id="flowPara959"></flowPara></flowRoot>    <flowRoot
+         id="flowPara959" /></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot961"
-       style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:25%;letter-spacing:0px;word-spacing:0px"><flowRegion
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:25%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.89263658,0,0,0.87755374,3.130131,3.1048626)"><flowRegion
          id="flowRegion963"><rect
            id="rect965"
            width="119.18835"
            height="52.06863"
            x="421.02371"
            y="27.237743" /></flowRegion><flowPara
-         id="flowPara967"></flowPara></flowRoot>    <rect
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="flowPara967" /></flowRoot>    <rect
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.62446111;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect979"
-       width="27.056316"
-       height="17.162586"
-       x="46.439941"
-       y="77.72271" />
+       width="24.151457"
+       height="15.061091"
+       x="44.584122"
+       y="71.310715" />
     <flowRoot
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:25%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       id="flowRoot981"><flowRegion
+       id="flowRoot981"
+       transform="matrix(0.89263658,0,0,0.87755374,3.130131,3.1048626)"><flowRegion
          id="flowRegion983"><use
+           transform="matrix(1.1202767,0,0,1.1395314,-3.506613,-3.5380883)"
+           height="100%"
+           width="100%"
            x="0"
            y="0"
            xlink:href="#rect979"
            id="use985" /></flowRegion><flowPara
          id="flowPara987"
-         style="font-size:4.23333333px;text-anchor:middle;text-align:center">low thresholded image</flowPara></flowRoot>    <rect
-       y="76.915062"
-       x="149.81929"
-       height="17.162586"
-       width="27.056316"
+         style="font-size:4.23333311px;text-align:center;text-anchor:middle">low thresholded image</flowPara></flowRoot>    <rect
+       y="70.601959"
+       x="136.8643"
+       height="15.061091"
+       width="24.151457"
        id="rect989"
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.62446111;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <flowRoot
        id="flowRoot997"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:25%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        xml:space="preserve"
-       transform="translate(103.37935,-0.80765118)"><flowRegion
+       transform="matrix(0.89263658,0,0,0.87755374,95.41032,2.3961053)"><flowRegion
          id="flowRegion993"><use
+           transform="matrix(1.1202767,0,0,1.1395314,-3.506613,-3.5380883)"
            id="use991"
            xlink:href="#rect979"
            y="0"
@@ -727,48 +739,115 @@
            height="100%" /></flowRegion><flowPara
          style="font-size:4.23333311px;text-align:center;text-anchor:middle"
          id="flowPara995">high thresholded image</flowPara></flowRoot>    <rect
-       y="151.58183"
-       x="137.11417"
-       height="85.997269"
-       width="73.334785"
+       y="132.81987"
+       x="125.70886"
+       height="79.066154"
+       width="54.162624"
        id="rect1008"
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.9114328;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.75105637;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.94117647" />
     <flowRoot
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       id="flowRoot1035"><flowRegion
-         id="flowRegion1037"><use
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:0"
+       id="flowRoot1035"
+       transform="matrix(0.89263658,0,0,0.87755374,3.3251484,23.983669)"><flowRegion
+         id="flowRegion1037"
+         style="stroke:#000000;stroke-opacity:0"><use
+           transform="matrix(1.1202767,0,0,1.1395314,-3.506613,-11.43067)"
            x="0"
            y="0"
            xlink:href="#rect1008"
            id="use1039"
            width="100%"
            height="100%" /></flowRegion><flowPara
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
-         id="flowPara1041">Give locations close to the camera a smaller number than locations far away, by mulitiplying the thresholded images by this one. </flowPara><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke:#000000;stroke-opacity:0"
+         id="flowPara1041">Give locations close to the camera a smaller value than locations far away, by mulitiplying the thresholded images by this one. </flowPara><flowPara
          id="flowPara1043"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">   </flowPara><flowPara
-         id="flowPara1049"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">This prevents close-up cards from counting more than far away cards. The transformation is defined by perspective projection.</flowPara><flowPara
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
-         id="flowPara1055" /><flowPara
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
-         id="flowPara1057">The intensity value of the resulting images can be summed to get a measure of how many yellow or blue cards are visible in the frame</flowPara></flowRoot>    <rect
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.61817145;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke:#000000;stroke-opacity:0" /><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke:#000000;stroke-opacity:0"
+         id="flowPara1057">This prevents close-up cards from counting more than far away cards. The transformation is defined by perspective projection.</flowPara></flowRoot>    <rect
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.62136018;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect1059"
-       width="73.140587"
-       height="39.664764"
-       x="5.9058394"
-       y="174.28275" />
+       width="37.549622"
+       height="78.059669"
+       x="36.149147"
+       y="133.3231" />
     <flowRoot
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       id="flowRoot1091"><flowRegion
-         id="flowRegion1093"><use
+       id="flowRoot974"
+       transform="matrix(0.89263658,0,0,0.87755374,2.6316547,15.067309)"><flowRegion
+         id="flowRegion976"><use
+           transform="matrix(1.1202767,0,0,1.1395314,-3.506613,-3.5380883)"
            x="0"
            y="0"
            xlink:href="#rect1059"
-           id="use1095" /></flowRegion><flowPara
+           id="use978"
+           width="100%"
+           height="100%" /></flowRegion><flowPara
+         id="flowPara980"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">Crop the thresholded images to remove white pixels from the top and bottom portions.  No cards ever appear in these parts of the frame, so there is no need to count how much yellow or blue is there.  </flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot982"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:25%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.89263658,0,0,0.87755374,3.130131,3.1048626)"><flowRegion
+         id="flowRegion984"><rect
+           id="rect986"
+           width="37.393612"
+           height="59.524529"
+           x="68.682144"
+           y="327.96924" /></flowRegion><flowPara
+         id="flowPara988"></flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot990"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:25%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.89263658,0,0,0.87755374,3.130131,3.1048626)"><flowRegion
+         id="flowRegion992"><rect
+           id="rect994"
+           width="213.6778"
+           height="91.576195"
+           x="497.564"
+           y="684.35327" /></flowRegion><flowPara
+         id="flowPara996"></flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot998"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:25%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.89263658,0,0,0.87755374,3.130131,3.1048626)"><flowRegion
+         id="flowRegion1000"><rect
+           id="rect1002"
+           width="189.25748"
+           height="92.339333"
+           x="516.6424"
+           y="684.35327" /></flowRegion><flowPara
+         id="flowPara1004"></flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot1253"
+       style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:25%;letter-spacing:0px;word-spacing:0px"><flowRegion
+         id="flowRegion1255"><rect
+           id="rect1257"
+           width="448.72336"
+           height="268.6235"
+           x="176.28418"
+           y="852.24298" /></flowRegion><flowPara
+         id="flowPara1259"></flowPara></flowRoot>    <rect
+       y="258.64627"
+       x="63.547104"
+       height="33.770393"
+       width="71.886299"
+       id="rect1226"
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.56548154;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.94117647" />
+    <flowRoot
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       id="flowRoot1261"
+       transform="translate(-8.951622)"><flowRegion
+         id="flowRegion1263"><use
+           transform="translate(8.951622)"
+           height="100%"
+           width="100%"
+           x="0"
+           y="0"
+           xlink:href="#rect1226"
+           id="use1265" /></flowRegion><flowPara
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
-         id="flowPara1097">Crop the thresholded images to remove white pixels from the top and bottom portions.  No cards ever appear in these parts of the frame, so there is no need to count how much yellow or blue is there.  </flowPara></flowRoot>  </g>
+         id="flowPara1267">The pixel intensity values in each image can now be summed to give a measure of how many cards are being held up.</flowPara></flowRoot>  </g>
 </svg>
